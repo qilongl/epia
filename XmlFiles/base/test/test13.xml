@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test13" datasource="dataSource" name="IF样例" desc="IF命令用法">
+    <Parameters>
+        <test>
+            <test></test>
+        </test>
+    </Parameters>
+    <Actions>
+        <var id="paramsInfo" isreturn="true" params="test">
+            <attriterator>
+                <paramName value="{name}"></paramName>
+                <paramValue value="{value}"></paramValue>
+            </attriterator>
+        </var>
+        <if test="#{test.test}=='1'">
+            <select id="check" isreturn="true" params="paramsInfo">
+                select '参数'||#{paramName}||'的值为：'||#{paramValue} as RESULT from dual
+            </select>
+        </if>
+        <if test="#{test.test}!='1'">
+            <select id="check" isreturn="true" params="paramsInfo">
+                select '校验未通过! 入参为：'||'参数'||#{paramName}||'的值为：'||#{paramValue} as RESULT from dual
+            </select>
+        </if>
+
+
+    </Actions>
+
+
+</Epia>

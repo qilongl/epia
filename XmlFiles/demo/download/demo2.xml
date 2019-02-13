@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="demo2" datasource="dataSource" name="Download样例" desc="多附件下载 zip格式">
+    <Parameters>
+    </Parameters>
+    <Actions>
+        <!--从指定目录下载多文件，下载文件名 ："第一个文件名+文件数.zip"   demo+2.zip -->
+        <select id="file1" isreturn="true">
+            select 'f:\\temp\\demo.xlsx' as PATH,'demo.xlsx' as ORINAME from dual
+            union
+            select 'f:\\temp\\接口列表.xlsx' as PATH,'接口列表.xlsx' as ORINAME from dual
+        </select>
+        <download id="download" params="file1"></download>
+    </Actions>
+</Epia>

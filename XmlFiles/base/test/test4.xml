@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test4" datasource="dataSource" name="测试开发环境新增xml配置文件自动加载" desc="测试4">
+    <Parameters>
+        <test>
+            <test></test>
+            <test2 default=""></test2>
+        </test>
+    </Parameters>
+    <Actions>
+        <select id="abc" isreturn="false" errorid="1" params="test">
+            <![CDATA[
+            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as QQ ,#{test} as test FROM dual
+            ]]>
+        </select>
+        <select id="insert" params="test" isreturn="true">
+            <![CDATA[
+            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as QQ ,#{test} as test FROM dual
+            ]]>
+        </select>
+        <update id="insert" params="test" isreturn="true">
+            <![CDATA[
+            insert into test values (sys_id.nextval,sys_guid(),'11111111',sysdate)
+            ]]>
+        </update>
+
+    </Actions>
+</Epia>

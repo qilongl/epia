@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test16" datasource="dataSource" name="Createfile样例" desc="写入磁盘(创建文件)命令用法">
+    <Parameters>
+        <test>
+            <userName></userName>
+        </test>
+    </Parameters>
+    <Actions>
+        <select id="userInfo" params="test" isreturn="true">
+            select * from sys_user su where su.objname = #{userName}
+        </select>
+        <!--<select id="functionList" params="test" isreturn="true">-->
+            <!--select id,-->
+            <!--objid,-->
+            <!--fun_name,-->
+            <!--fun_url,-->
+            <!--crt_dt,-->
+            <!--crt_psn,-->
+            <!--upd_dt,-->
+            <!--upd_psn,-->
+            <!--is_delete,-->
+            <!--fun_source,-->
+            <!--is_contrl_fun-->
+            <!--from sys_function-->
+        <!--</select>-->
+        <!--<select id="userOrder" params="test" isreturn="true">-->
+            <!--select * from  user_order-->
+        <!--</select>-->
+        <!--写入磁盘-->
+        <!--不指定目录时，使用系统默认附件目录 文件名为uuid-->
+        <!--<createfile id="writeTxt1" filename="测试.txt" params="userInfo"  errorid="222"/>-->
+
+        <!--指定文件存储目录，basesavepath，savepath-->
+        <!--<createfile id="writeTxt2" filename="测试20190115.txt" params="userInfo"  basesavepath="f:"-->
+                    <!--savepath="temp" errorid="111"/>-->
+
+        <!--<download id="downloadTest" params="writeTxt1" errorid="222"></download>-->
+
+        <!--创建xml文件时需指定propertyname属性 且参数列表中存在 propertyname 对应的属性-->
+        <var id="fileName" isreturn="true">
+            <fileName value="${guid}.txt"></fileName>
+            <fileName1 value="测试${simpledate}-${guid}.TXT"></fileName1>
+        </var>
+        <!--<createfile id="writeXml" filename="#{fileName.fileName}" params="userInfo"  propertyname="OBJNAME" basesavepath="f:" savepath="temp" errorid="333" isreturn="true"/>-->
+        <!--<createfile id="writeXml123" filename="#{fileName.fileName}" params="userInfo"  propertyname="OBJNAME" basesavepath="f:"  errorid="333" isreturn="true"/>-->
+        <!--<createfile id="QWWQR"  params="userInfo"  filename="#{fileName.fileName}" isreturn="true"/>-->
+    </Actions>
+
+</Epia>

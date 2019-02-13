@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test8" datasource="dataSource" name="变量定义样例" desc="var命令用法">
+    <Parameters>
+        <test>
+            <test></test>
+            <test2 default="${date}"></test2>
+        </test>
+        <addparams islist="true">
+            <test></test>
+        </addparams>
+    </Parameters>
+    <Actions>
+        <!--<var id="bianliang" isreturn="true">-->
+        <!--<name value="张三"></name>-->
+        <!--<age value="18"></age>-->
+        <!--</var>-->
+        <!--<var id="bianliang2" params="bianliang">-->
+        <!--<name value="李四"></name>-->
+        <!--<age value="#{age}"></age>-->
+        <!--</var>-->
+        <!--<var id="bianliang3"  isreturn="false">-->
+        <!--<name value="#{bianliang.name}"></name>-->
+        <!--<name2 value="#{bianliang2.name}"></name2>-->
+        <!--<date value="北京时间：${date}"></date>-->
+        <!--</var>-->
+        <!--<var id='test2' params='addparams' isreturn="true">-->
+        <!--<attriterator>&lt;!&ndash;循环标签&ndash;&gt;-->
+        <!--<tablename value='reports'></tablename>-->
+        <!--<colsName value='{name}'></colsName>&lt;!&ndash;参数标签属性名&ndash;&gt;-->
+        <!--<value value='{value}'></value>&lt;!&ndash;参数属性对应的值&ndash;&gt;-->
+        <!--<creator value='1123'></creator>-->
+        <!--<intime value='${fulldate}'></intime>-->
+        <!--</attriterator>-->
+        <!--</var>-->
+        <!--range="3" 循环次数-->
+        <var id='testVar1' params='test' range="3" isreturn="true">
+            <tablename value='reports'></tablename>
+            <colsName value='{name}'></colsName><!--外层没有<attriterator>标签时   {name} {value} 均空-->
+            <value value='{value}'></value><!--参数属性对应的值-->
+            <creator value='${guid}'></creator>
+            <intime value='${fulldate}'></intime>
+        </var>
+        <var id='testVar' params='test' range="2" isreturn="true">
+            <attriterator><!--循环参数集中的每个参数标签-->
+                <tablename value='reports'></tablename>
+                <colsName value='{name}'></colsName><!--参数标签属性名-->
+                <value value='{value}'></value><!--参数属性对应的值-->
+                <creator value='${guid}'></creator>
+                <intime value='${fulldate}'></intime>
+            </attriterator>
+        </var>
+        <var id='testVar2' params='addparams' range="1" isreturn="true">
+            <attriterator><!--循环参数集中的每个参数标签-->
+                <tablename value='reports'></tablename>
+                <colsName value='{name}'></colsName><!--参数标签属性名-->
+                <value value='{value}'></value><!--参数属性对应的值-->
+                <creator value='${guid}'></creator>
+                <intime value='${fulldate}'></intime>
+            </attriterator>
+        </var>
+        <!--目前var命令中一个参数仅支持一个参数引用-->
+        <var id='testVar3' isreturn="true">
+            <test1 value="#{test.test}"/>
+        </var>
+        <!--只会执行结果集中的一条-->
+        <!--<insert id="varTest" params="test2" isreturn="true" errorid="900" msg="定义变量标签测试">-->
+        <!--<![CDATA[-->
+        <!--insert into test values(sys_id.nextval,sys_guid(),#{colsName}||'-'||#{value}||'-'||#{tablename},sysdate)-->
+        <!--]]>-->
+        <!--</insert>-->
+        <!--islist="true" 根据结果集批量执行-->
+        <!--<insert id="varTest2" islist="true" params="test2" isreturn="true" errorid="900" msg="定义变量标签测试">-->
+        <!--<![CDATA[-->
+        <!--insert into test values(sys_id.nextval,sys_guid(),#{colsName}||'-'||#{value}||'-'||#{tablename}||'-'||'批量',sysdate)-->
+        <!--]]>-->
+        <!--</insert>-->
+
+
+    </Actions>
+</Epia>

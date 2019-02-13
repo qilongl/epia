@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test10" datasource="dataSource" name="Rest样例" desc="Rest命令用法">
+    <Parameters>
+        <restPrams>
+            <userId default="123"></userId>
+        </restPrams>
+    </Parameters>
+    <Actions>
+        <!--rest 默认采用post方式  目前支持get、post 方式-->
+        <!--<rest id="Rest"  url="http://192.168.12.150:8888/epia/user/list" errorid="resterror" isreturn="true">-->
+        <!--</rest>-->
+        <!--<convert id="convertToJSON" classpath="com.easipass.epia.converter.StringObjectToListMapConverter"-->
+                 <!--params="Rest" isreturn="true"></convert>-->
+
+        <!--<rest id="Rest123"  url="http://localhost:8888/epia/componentService/reloadFunction" msg="rest异常" errorid="123" isreturn="true">-->
+            <!--<jsonParams value="{'key':'base-test-test16'}"/>-->
+        <!--</rest>-->
+        <!--<convert id="methodTest123" params="Rest123" classpath="com.easipass.epia.converter.StringObjectToListMapConverter"  isreturn="true"></convert>-->
+        <!--<convert id="methodTest"  classpath="com.easipass.epia.converter.StringObjectToListMapConverter" method="test" isreturn="true"></convert>-->
+
+
+        <!--循环调用测试-->
+        <!--get方式-->
+        <!--<rest id="Rest456"  url="http://localhost:8888/epia/easyComponentService?FunctionName=base-test-test16&amp;test-userName=刘奇龙" method="get" errorid="cccc">-->
+        <!--</rest>-->
+        <!--<convert id="methodTest456" classpath="com.easipass.epia.converter.StringObjectToListMapConverter"-->
+                 <!--params="Rest456" isreturn="true"></convert>-->
+
+        <!--post方式(默认方式)-->
+        <!--<rest id="RestDefault"  url='http://localhost:8888/epia/componentService'  errorid="cccc">-->
+            <!--<jsonParams value='{"Functions":[{"FunctionName":"test10","Parameters":{"test":{"test":7},"addparams":[{"test":"1111111","value":"wwwwwwww"},{"test":"222222","value":"wwwwwwww"}]},"ModuleName":"base-test"}]}'/>-->
+        <!--</rest>-->
+        <!--<convert id="RestDefaultResult" classpath="com.easipass.epia.converter.StringObjectToListMapConverter"-->
+                 <!--params="RestDefault" isreturn="true"></convert>-->
+
+        <!--post方式-->
+        <rest id="RestPost"  url='http://localhost:8888/epia/componentService'  method="post"  errorid="cccc">
+            <jsonParams value='{"Functions":[{"FunctionName":"test17","Parameters":{"test":{"test":7},"addparams":[{"test":"1111111","value":"wwwwwwww"},{"test":"222222","value":"wwwwwwww"}]},"ModuleName":"base-test"}]}'/>
+        </rest>
+        <convert id="RestPostResult" classpath="com.easipass.epia.converter.StringObjectToListMapConverter"
+                 params="RestPost" isreturn="true"></convert>
+
+        <!--get方式     &：&amp; <：&lt;  >：&gt;     更多转移字符请自行查询-->
+
+        <rest id="RestGet"  url='http://localhost:8888/epia/easyComponentService?FunctionName=base-test-test16&amp;test-userName="刘奇龙"&amp;info-userName=lql'  method="get"  errorid="cccc">
+        </rest>
+        <convert id="RestGetResult" classpath="com.easipass.epia.converter.StringObjectToListMapConverter"
+                 params="RestGet" isreturn="true"></convert>
+        <!--正文中的如有特殊字符，建议用 <![CDATA[]]> 包裹-->
+        <select id="test123" isreturn="true">
+            <![CDATA[
+                select '<select id="test123" isreturn="true">' as SPECIALCHAR FROM DUAL
+            ]]>
+        </select>
+    </Actions>
+
+
+</Epia>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test9" datasource="dataSource" name="WebService样例" desc="WebService命令用法">
+    <Parameters>
+        <test>
+            <test></test>
+        </test>
+        <webService>
+            <userId default="123"></userId>
+        </webService>
+    </Parameters>
+    <Actions>
+        <service id="webServiceTest" url="www.baidu.com" method="post" params="webService" isreturn="true">
+            <!--统一规定入参使用params属性下面的属性值,提前构建好参数集合-->
+            <userId params="userId"></userId>
+        </service>
+    </Actions>
+</Epia>

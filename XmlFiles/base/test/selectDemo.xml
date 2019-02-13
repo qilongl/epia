@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="selectDemo" datasource="dataSource" name="查询样例" desc="查询标签用法">
+    <Parameters>
+        <test>
+            <test></test>
+            <test2 default=""></test2>
+        </test>
+        <test2>
+            <test></test>
+            <test2 default="123"></test2>
+        </test2>
+        <test3>
+            <!--${系统属性}-->
+            <name default="${fulldate}"></name>
+        </test3>
+        <!--数组不支持给定对象默认值，（无法判断具体数组大小）（若数组参数设置非必填属性，前端不传递参数，则引用该参数的命令结果集返还空数组（不执行该命令））-->
+        <test4 islist="true">
+            <name default="测试"></name>
+        </test4>
+        <test5>
+            <!--expression：参数正则表达式   desc:正则表达式验证失败时异常提示信息-->
+            <test expression="[0-1]" desc="参数test只接受0，1"></test>
+            <test2 default="123" expression="[0-1]" desc="参数test只接受0，1"></test2>
+        </test5>
+    </Parameters>
+    <Actions>
+        <!--标签必填属性：id-->
+        <!--该结果集不会输出-->
+        <select id="Retrieve">
+            <![CDATA[
+            select 1 as ID, to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time from dual
+            ]]>
+        </select>
+        <!--是否输出结果集：isreturn="true" 时输出-->
+        <select id="Retrieve1" isreturn="true">
+            <![CDATA[
+            SELECT  1 as ID ,to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID  FROM dual
+            ]]>
+        </select>
+        <!--自定义错误状态码  errorid="0": 当该标签异常时将返还该标签定义的errorid,可快速定位异常-->
+        <select id="Retrieve2" errorid="0">
+            <![CDATA[
+            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID FROM  dual
+            ]]>
+        </select>
+        <!--自定义异常提示信息 msg="异常" :标签异常时返还自定义异常提示+异常栈信息-->
+        <select id="Retrieve22" isreturn="true" errorid="0" msg="小伙子你的sql有问题哦">
+            <![CDATA[
+            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID FROM  dual
+            ]]>
+        </select>
+        <!--无参查询-->
+        <select id="Retrieve3" isreturn="true" errorid="1">
+            <![CDATA[
+            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID  FROM dual
+            ]]>
+        </select>
+
+        <!--带参查询-->
+        <!--不指定默认参数集，直接引用 #{参数集.参数名}-->
+        <select id="Retrieve4" isreturn="true" errorid="2">
+            <![CDATA[
+            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID ,#{test.test} as test,#{test2.test2} as test2 FROM dual
+            ]]>
+        </select>
+        <!--指定默认参数集，可直接引用参数集中的参数名 #{test}、#{test2}-->
+        <select id="Retrieve5" params="test" isreturn="true" errorid="3">
+            <![CDATA[
+            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID ,#{test} as NAME1,#{test3.name} as Name FROM dual
+            ]]>
+        </select>
+        <!--默认参数集是数组时，取数组最后一个对象，数组参数集无法直接引用，必须指定为默认参数集-->
+        <!--<select id="Retrieve6" params="test4" isreturn="true" errorid="3">-->
+        <!--<![CDATA[-->
+        <!--SELECT 'Retrieve6' as ID, to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID ,#{name} as Name FROM dual-->
+        <!--]]>-->
+        <!--</select>-->
+        <!--依据默认参数集批量更新-->
+        <update id="Retrieve6" params="test4" isreturn="true" errorid="3123">
+            <![CDATA[
+            insert into test values(sys_id.nextval,sys_guid(),#{name},sysdate)
+            ]]>
+        </update>
+        <!--引用其他结果集作为入参 指定默认参数集-->
+        <!--<select id="Retrieve7" params="Retrieve6" isreturn="true" errorid="3">-->
+        <!--<![CDATA[-->
+        <!--SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID ,#{ID} as Name FROM dual-->
+        <!--]]>-->
+        <!--</select>-->
+        <!--直接引用 #{参数集.参数名}-->
+        <!--<select id="Retrieve8" isreturn="true" errorid="3">-->
+        <!--<![CDATA[-->
+        <!--SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID ,#{Retrieve7.NAME} as Name FROM dual-->
+        <!--]]>-->
+        <!--</select>-->
+        <!--期望结果集大小校验  expect：预期结果集大小，当与预期结果集大小不符时异常-->
+        <select id="Retrieve9" isreturn="true" errorid="9" expect="2">
+            <![CDATA[
+            SELECT 1 AS ID FROM DUAL
+            UNION
+            SELECT 2 AS ID FROM DUAL
+            ]]>
+        </select>
+
+        <select id="Retrieve10" isreturn="true" errorid="9">
+            <if test="#{test2.test}=='123'">
+            SELECT 1 AS ID FROM DUAL
+            </if>
+            <if test="1==1">
+                SELECT 2 AS ID FROM DUAL
+            </if>
+        </select>
+
+    </Actions>
+</Epia>

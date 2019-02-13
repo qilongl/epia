@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test18" datasource="dataSource" name="DELETEFILE样例" desc="删除文件测试">
+    <Parameters>
+        <!--<test>-->
+        <!--<userName></userName>-->
+        <!--</test>-->
+    </Parameters>
+    <Actions>
+        <var id="file1" isreturn="true">
+            <PATH value="F:\temp\1.txt"></PATH>
+        </var>
+        <var id="file2" isreturn="true">
+            <PATH value="F:\\temp\\2.txt"></PATH>
+        </var>
+        <var id="file3" isreturn="true">
+            <PATH value="F:/temp/3.txt"></PATH>
+        </var>
+        <var id="file4" isreturn="true">
+            <PATH value="F://temp//4.txt"></PATH>
+        </var>
+        <!--<createfile id="create1" params="file1" filename="1.txt" basesavepath="f:" savepath="temp"></createfile>-->
+        <!--<createfile id="create1" params="file2" filename="2.txt" basesavepath="f:" savepath="temp"></createfile>-->
+        <!--<createfile id="create1" params="file3" filename="3.txt" basesavepath="f:" savepath="temp"></createfile>-->
+        <!--<createfile id="create1" params="file4" filename="4.txt" basesavepath="f:" savepath="temp"></createfile>-->
+        <deletefile id="deleteFile1" params="file1" isreturn="true"></deletefile>
+        <deletefile id="deleteFile2" params="file2" isreturn="true"></deletefile>
+        <deletefile id="deleteFile3" params="file3" isreturn="true"></deletefile>
+        <deletefile id="deleteFile4" params="file4" isreturn="true"></deletefile>
+    </Actions>
+</Epia>

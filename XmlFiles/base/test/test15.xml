@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test15" datasource="dataSource" name="Error样例" desc="自定义异常命令用法">
+    <Parameters>
+        <test>
+            <userName></userName>
+        </test>
+    </Parameters>
+    <Actions>
+        <select id="check" params="test">
+            SELECT COUNT(1) AS TOTAL FROM SYS_USER WHERE OBJNAME = #{userName}
+        </select>
+        <if test="#{check.TOTAL}=='1'">
+            <select id="userInfo" params="test" isreturn="true">
+                select * from sys_user su where su.objname = #{userName}
+            </select>
+        </if>
+        <if test="#{check.TOTAL}=='0'">
+            <error id="error" msg="#{test.userName} 用户不存在" errorid="500"></error>
+        </if>
+        <if test="#{check.TOTAL}>'1'">
+            <error id="error" msg="#{test.userName} 用户不合法，请联系管理员" errorid="500"></error>
+        </if>
+
+    </Actions>
+
+
+</Epia>

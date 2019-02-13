@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test7" datasource="dataSource" name="测试开发环境新增xml配置文件自动加载" desc="测试4">
+    <Parameters>
+        <test>
+            <test></test>
+            <test2 default="${date}"></test2>
+        </test>
+    </Parameters>
+    <Actions>
+
+        <select id="abc" isreturn="false" errorid="1" params="test">
+            <![CDATA[
+        SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as QQ ,#{test} as test FROM dual
+        ]]>
+        </select>
+        <select id="test" params="test" isreturn="true">
+            <![CDATA[
+                SELECT ${sysbasedir} as SYSTEM_PARAMETER ,
+                #{test2} as REFERENCE_PARAMETER1 ,
+                ${date} as REFERENCE_PARAMETER2,
+                #[test] as REFERENCE_PARAMETER3,
+                to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID  FROM DUAL
+            ]]>
+        </select>
+        <select id="sysFunction" params="test" isreturn="true" errorid="900" msg="调用系统默认参数时出错">
+            <![CDATA[
+                SELECT ${sysbasedir} as SYSTEM_PARAMETER ,
+                ${guid} as uuid ,
+                ${date} as date1,--date 是关键字，别名时请注意
+                ${simpledate} as simpledate
+                FROM DUAL
+            ]]>
+        </select>
+
+
+    </Actions>
+</Epia>

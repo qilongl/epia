@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test1" datasource="dataSource" name="样例1" desc="基础增删改查">
+    <Parameters>
+        <test>
+            <test expression="[0-1]" desc="参数test只接受0，1"></test>
+            <test2 default=""></test2>
+        </test>
+    </Parameters>
+    <Actions>
+        <select id="Retrieve22" isreturn="true" errorid="0" msg="啊呜,有问题哦">
+            <![CDATA[
+            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time , rawtohex(sys_guid()) as UUID from  dual
+            UNION
+            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time , rawtohex(sys_guid()) as UUID from  dual
+            ]]>
+        </select>
+        <!--&lt;!&ndash;查询&ndash;&gt;-->
+        <!--<select id="Retrieve1" isreturn="true" errorid="1">-->
+            <!--<![CDATA[-->
+            <!--SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID  FROM dual-->
+            <!--]]>-->
+        <!--</select>-->
+        <!--<select id="Retrieve" isreturn="true" errorid="1">-->
+            <!--<![CDATA[-->
+            <!--SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID  FROM dual-->
+            <!--]]>-->
+        <!--</select>-->
+        <!--<insert id="Create" isreturn="true" errorid="2" params="test">-->
+            <!--<![CDATA[-->
+            <!--insert into test values (sys_id.nextval,sys_guid(),#{test},sysdate)-->
+            <!--]]>-->
+        <!--</insert>-->
+        <!--<delete id="Delete" isreturn="true" errorid="3">-->
+            <!--<![CDATA[-->
+            <!--SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time   FROM dual-->
+            <!--]]>-->
+        <!--</delete>-->
+    </Actions>
+</Epia>

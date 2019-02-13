@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="demo3" datasource="dataSource" name="Download样例" desc="下载附件测试">
+    <Parameters>
+    </Parameters>
+    <Actions>
+        <!--从指定目录下载-->
+        <var id="file1" isreturn="true">
+            <PATH value="f:\\temp"></PATH>
+            <ORINAME value="test.zip"></ORINAME>
+        </var>
+        <download id="download" params="file1" errorid="404"></download>
+    </Actions>
+</Epia>

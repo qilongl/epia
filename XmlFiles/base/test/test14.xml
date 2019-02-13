@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test14" datasource="dataSource" name="IF样例" desc="嵌套IF命令用法">
+    <Parameters>
+        <test>
+            <test></test>
+            <test2></test2>
+            <test3></test3>
+            <test4></test4>
+        </test>
+    </Parameters>
+    <Actions>
+        <!--<var id="paramsInfo" isreturn="true" params="test">-->
+            <!--<attriterator>-->
+                <!--<paramName value="{name}"></paramName>-->
+                <!--<paramValue value="{value}"></paramValue>-->
+            <!--</attriterator>-->
+        <!--</var>-->
+        <!--<if test="#{test.test}=='1'">-->
+            <!--&lt;!&ndash;引用参数集中的最后一个对象&ndash;&gt;-->
+            <!--<select id="check" isreturn="true" params="paramsInfo">-->
+                <!--select '参数'||#{paramName}||'的值为：'||#{paramValue} as RESULT from dual-->
+            <!--</select>-->
+        <!--</if>-->
+
+        <if test="#{test.test}=='1'">
+            <if test="#{test.test2}=='2'">
+                <select id="result" isreturn="true">
+                    select '参数校验通过' as result from dual
+                </select>
+                <if test="#{test.test3}=='3'">
+                    <select id="result1" isreturn="true">
+                        select '参数校验通过' as result from dual
+                    </select>
+                </if>
+                <if test="#{test.test3}!='3'">
+                    <select id="result1" isreturn="true">
+                        select '参数test3的校验未通过' as result from dual
+                    </select>
+                </if>
+            </if>
+            <if test="#{test.test2}!='2'">
+                <select id="result" isreturn="true">
+                    select '参数test2的校验未通过' as result from dual
+                </select>
+            </if>
+        </if>
+
+    </Actions>
+
+
+</Epia>

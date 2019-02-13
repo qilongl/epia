@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test12" datasource="dataSource" name="IMPORT样例" desc="引用其他业务配置文件命令用法">
+    <Parameters>
+    </Parameters>
+    <Actions>
+        <!--&lt;!&ndash;引用其他配置文件&ndash;&gt;-->
+        <!--<import id="import1" source="base-test-test10" errorid="importerror" isretrun="true">-->
+        <!--&lt;!&ndash;<restPrams params="restPrams"></restPrams>&ndash;&gt;-->
+        <!--</import>-->
+        <!--<var id="varTest" params="import1" isreturn="true">-->
+        <!--<userId value="#{userId}"></userId>-->
+        <!--<userName value="#{username}"></userName>-->
+        <!--</var>-->
+
+        <!--构建参数    var命令构建的参数是一个list-->
+        <var id="buildPrams" isreturn="true">
+            <test value="1"></test>
+            <test2 value=""></test2>
+        </var>
+        <!--被调用的接口参数均需接收List参数-->
+        <!--  todo 调用的接口没有重新加载（目前是从内存中加载的接口） -->
+        <!--  已完善 2019/1/7-->
+        <import id="import2" source="base-test-test1" errorid="import1error" isreturn="true">
+            <test params="buildPrams"></test>
+        </import>
+        <!--返还的条数不是数据库执行的条数-->
+        <update id="insert" islist="true" params="Retrieve22" isreturn="true">
+            <![CDATA[
+            insert into test values (sys_id.nextval,sys_guid(),#{UUID},sysdate)
+            ]]>
+        </update>
+
+
+    </Actions>
+
+
+</Epia>

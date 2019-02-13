@@ -1,0 +1,25 @@
+${AnsiColor.BRIGHT_RED}
+
+
+EEEEEEEEEEEEEEEEEEEEEE                      PPPPPPPPPPPPPPPPP                         IIIIIIIIII                                     AAA
+E                    E                      P                P                        I        I                                    A   A
+E                    E                      P      PPPPPP     P                       I        I                                   A     A
+EE      EEEEEEEEE    E                      PP     P     P     P                      II      II                                  A       A
+  E     E       EEEEEE                        P    P     P     P                        I    I                                   A         A
+  E     E                                     P    P     P     P                        I    I                                  A     A     A
+  E      EEEEEEEEEE                           P    PPPPPP     P                         I    I                                 A     A A     A
+  E               E                           P             PP                          I    I                                A     A   A     A
+  E               E                           P    PPPPPPPPP                            I    I                               A     A     A     A
+  E      EEEEEEEEEE                           P    P                                    I    I                              A     AAAAAAAAA     A
+  E     E                                     P    P                                    I    I                             A                     A
+  E     E       EEEEEE                        P    P                                    I    I                            A     AAAAAAAAAAAAA     A
+EE      EEEEEEEE     E                      PP      PP                                II      II                         A     A             A     A
+E                    E                      P        P                                I        I                        A     A               A     A
+E                    E                      P        P                                I        I                       A     A                 A     A
+EEEEEEEEEEEEEEEEEEEEEE                      PPPPPPPPPP                                IIIIIIIIII                      AAAAAAA                   AAAAAAA
+
+
+${AnsiColor.WHITE}
+:: Spring Boot :: ${spring-boot.version}
+
+

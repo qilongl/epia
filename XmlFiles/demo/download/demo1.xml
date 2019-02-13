@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="demo1" datasource="dataSource" name="Download样例" desc="查询结果集附件下载">
+    <Parameters>
+        <params>
+            <isDownload default=""></isDownload>
+        </params>
+    </Parameters>
+    <Actions>
+        <!--一个接口中仅有一个下载任务，如需多文件下载，请组装参数，文件下载zip格式 ，请参考demo2.xml-->
+        <!--下载查询的结果集-->
+
+        <select id="functionList" isreturn="true">
+            select * from sys_function
+        </select>
+        <if test="#{params.isDownload}!=''">
+            <!--1、创建临时文件-->
+            <createfile id="create1" params="functionList" filename="接口列表.xlsx"></createfile>
+            <!--2、根据临时文件下载附件-->
+            <download id="download" params="create1"></download>
+            <!--3、删除临时文件-->
+            <deletefile id="deleteFile4" params="create1"></deletefile>
+        </if>
+
+    </Actions>
+</Epia>

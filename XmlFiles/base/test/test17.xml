@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="test17" datasource="dataSource" name="压力测试样例" desc="压力测试">
+    <Parameters>
+        <!--<test>-->
+            <!--<userName></userName>-->
+        <!--</test>-->
+    </Parameters>
+    <Actions>
+        <!--<select id="userInfo" params="test" isreturn="true">-->
+            <!--select * from sys_user su where su.objname = #{userName}-->
+        <!--</select>-->
+        <select id="userInfo" isreturn="true">
+            select 1 as test from dual
+        </select>
+    </Actions>
+</Epia>
