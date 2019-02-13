@@ -266,6 +266,7 @@ public class ComponentController {
      */
     private void writerResult(String str, HttpServletResponse response) {
         try {
+            response.setCharacterEncoding("UTF-8");
             Writer writer = response.getWriter();
             writer.write(str);
             writer.flush();

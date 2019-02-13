@@ -66,7 +66,8 @@ public class OutFormater {
      */
     public static String stackTraceToString(Exception ex) {
         StringBuffer exceptionString = new StringBuffer();
-        exceptionString.append(ex.getMessage() + "<br>");
+//        exceptionString.append(ex.getMessage() + "<br>");
+        exceptionString.append(ex + "<br>");
         for (int i = 0; i < ex.getStackTrace().length; i++) {
             StackTraceElement stackTraceElement = ex.getStackTrace()[i];
             String className = stackTraceElement.getClassName();
