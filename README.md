@@ -15,19 +15,19 @@
 
 ## 开发
 
-#### 克隆项目
+#### 1、克隆项目
 > git clone git@192.168.0.32:qlliu/epia.git
 
-#### 执行数据库脚本
+#### 2、执行数据库脚本
 > [数据库脚本](./dbscript/base.sql)
 
-#### 修改数据库连接配置
-> [数据库连接配置](./src/resources/db.properties)
+#### 3、修改数据库连接配置
+> [数据库连接配置](./src/main/resources/db.properties)
 
-#### 修改xml配置文件路径配置
-> [xml配置文件路径配置](./src/resources/sys.properties)
+#### 4、修改xml配置文件路径配置
+> [xml配置文件路径配置](./src/main/resources/sys.properties)
 
-#### 启动服务
+#### 5、启动服务
 > [Epia服务](./src/main/java/com/easipass/epia/EpiaApplication.java)
 
 ## 更多
