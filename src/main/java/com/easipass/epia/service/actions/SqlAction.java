@@ -26,13 +26,14 @@ public class SqlAction implements Serializable {
 
     private static Logger logger = LoggerFactory.getLogger(SqlAction.class);
 
+    private XmlBusiConfig xmlBusiConfig;
+
+    private JSONObject inParams;// 请求的入参(过滤后的参数)
+
     public SqlAction(XmlBusiConfig xmlBusiConfig) {
         this.xmlBusiConfig = xmlBusiConfig;
     }
 
-    private XmlBusiConfig xmlBusiConfig;
-
-    private JSONObject inParams;// 请求的入参(过滤后的参数)
 
     /**
      * SQL命令解析

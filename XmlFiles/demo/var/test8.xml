@@ -7,72 +7,131 @@
         </test>
         <addparams islist="true">
             <test></test>
+            <ww></ww>
         </addparams>
     </Parameters>
     <Actions>
+        <var id='test1' value="一个常量" isreturn="true"></var>
+        <var id='test2' value="${date}" isreturn="true"></var>
+        <var id='test3' value="#{test.test}" isreturn="true"></var>
+        <!--<select id="select1" isreturn="true">-->
+            <!--select ID,NAME from table1-->
+        <!--</select>-->
+
+        <!--<var id='test1' value="一个常量" isreturn="true"></var>-->
+        <!--<var id='test2' params='test1' isreturn="true"></var>-->
+        <!--<var id='test3' params='select1' isreturn="true" errorid="123">-->
+            <!--<test value="引用参数后再自定义一个常量"></test>-->
+            <!--<id value="#{ID}"></id>-->
+            <!--<name value="#{NAME}"></name>-->
+        <!--</var>-->
+        <!--<var id='test3' params='select1' isreturn="true" errorid="123">-->
+            <!--<id value="#{ID}"></id>-->
+            <!--<createId value="#{ID}"></createId>-->
+            <!--<createDate value="${date}"></createDate>-->
+        <!--</var>-->
+        <!--<insert id="insert" params="test3" islist="true">-->
+            <!--insert into log(ID,CREATEID,CREATEDATE) values(#{id},#{createId},#{createDate})-->
+        <!--</insert>-->
         <!--<var id="bianliang" isreturn="true">-->
-        <!--<name value="张三"></name>-->
-        <!--<age value="18"></age>-->
+            <!--<name value="张三"></name>-->
+            <!--<age value="18"></age>-->
         <!--</var>-->
-        <!--<var id="bianliang2" params="bianliang">-->
-        <!--<name value="李四"></name>-->
-        <!--<age value="#{age}"></age>-->
+        <!--<var id="test" params="bianliang" isreturn="true">-->
+            <!--<name value="李四"></name>-->
+            <!--<test value="#{age}"></test>-->
         <!--</var>-->
-        <!--<var id="bianliang3"  isreturn="false">-->
-        <!--<name value="#{bianliang.name}"></name>-->
-        <!--<name2 value="#{bianliang2.name}"></name2>-->
-        <!--<date value="北京时间：${date}"></date>-->
+        <!--&lt;!&ndash;id 定义请不要和参数标签名重复&ndash;&gt;-->
+        <!--<var id="bianliang233" params="test" isreturn="true">-->
+            <!--<name value="李四"></name>-->
+            <!--<age value="#{test}"></age>-->
+        <!--</var>-->
+        <!--<var id="bianliang3" isreturn="false">-->
+            <!--<name value="#{bianliang.name}"></name>-->
+            <!--<name2 value="#{bianliang2.name}"></name2>-->
+            <!--<date value="北京时间：${date}"></date>-->
         <!--</var>-->
         <!--<var id='test2' params='addparams' isreturn="true">-->
-        <!--<attriterator>&lt;!&ndash;循环标签&ndash;&gt;-->
-        <!--<tablename value='reports'></tablename>-->
-        <!--<colsName value='{name}'></colsName>&lt;!&ndash;参数标签属性名&ndash;&gt;-->
-        <!--<value value='{value}'></value>&lt;!&ndash;参数属性对应的值&ndash;&gt;-->
-        <!--<creator value='1123'></creator>-->
-        <!--<intime value='${fulldate}'></intime>-->
-        <!--</attriterator>-->
+            <!--<attriterator>&lt;!&ndash;循环标签&ndash;&gt;-->
+                <!--<tablename value='reports'></tablename>-->
+                <!--<colsName value='{name}'></colsName>&lt;!&ndash;参数标签属性名&ndash;&gt;-->
+                <!--<value value='{value}'></value>&lt;!&ndash;参数属性对应的值&ndash;&gt;-->
+                <!--<creator value='1123'></creator>-->
+                <!--<intime value='${fulldate}'></intime>-->
+            <!--</attriterator>-->
+        <!--</var>-->
+        <!--range="1" 循环次数-->
+        <!--<var id='testVar11'  range="2" isreturn="true" errorid="456">-->
+            <!--<tablename value='reports'></tablename>-->
+            <!--<creator value='${guid}'></creator>-->
+            <!--<intime value='${fulldate}'></intime>-->
         <!--</var>-->
         <!--range="3" 循环次数-->
-        <var id='testVar1' params='test' range="3" isreturn="true">
-            <tablename value='reports'></tablename>
-            <colsName value='{name}'></colsName><!--外层没有<attriterator>标签时   {name} {value} 均空-->
-            <value value='{value}'></value><!--参数属性对应的值-->
-            <creator value='${guid}'></creator>
-            <intime value='${fulldate}'></intime>
-        </var>
-        <var id='testVar' params='test' range="2" isreturn="true">
-            <attriterator><!--循环参数集中的每个参数标签-->
-                <tablename value='reports'></tablename>
-                <colsName value='{name}'></colsName><!--参数标签属性名-->
-                <value value='{value}'></value><!--参数属性对应的值-->
-                <creator value='${guid}'></creator>
-                <intime value='${fulldate}'></intime>
-            </attriterator>
-        </var>
-        <var id='testVar2' params='addparams' range="1" isreturn="true">
-            <attriterator><!--循环参数集中的每个参数标签-->
-                <tablename value='reports'></tablename>
-                <colsName value='{name}'></colsName><!--参数标签属性名-->
-                <value value='{value}'></value><!--参数属性对应的值-->
-                <creator value='${guid}'></creator>
-                <intime value='${fulldate}'></intime>
-            </attriterator>
-        </var>
-        <!--目前var命令中一个参数仅支持一个参数引用-->
-        <var id='testVar3' isreturn="true">
-            <test1 value="#{test.test}"/>
-        </var>
-        <!--只会执行结果集中的一条-->
+        <!--<var id='testVar22' params='test' range="3" isreturn="true">-->
+            <!--<tablename value='reports'></tablename>-->
+            <!--<creator value='${guid}'></creator>-->
+            <!--<intime value='${fulldate}'></intime>-->
+            <!--<test value='#{test}'></test>-->
+            <!--<test2 value='#{test2}'></test2>-->
+        <!--</var>-->
+        <!--range="3" 循环次数-->
+        <!--<var id='testVar33' params='test' range="3" isreturn="true">-->
+            <!--<tablename value='reports'></tablename>-->
+            <!--<colsName value='{name}'></colsName>&lt;!&ndash;外层没有<attriterator>标签时   {name} {value} 均空&ndash;&gt;-->
+            <!--<value value='{value}'></value>&lt;!&ndash;参数属性对应的值&ndash;&gt;-->
+            <!--<creator value='${guid}'></creator>-->
+            <!--<intime value='${fulldate}'></intime>-->
+            <!--<test value='#{test}'></test>-->
+            <!--<test2 value='#{test2}'></test2>-->
+        <!--</var>-->
+        <!--<var id='testVar' params='test' range="2" isreturn="true">-->
+            <!--<attriterator>&lt;!&ndash;循环参数集中的每个参数标签&ndash;&gt;-->
+                <!--<tablename value='reports'></tablename>-->
+                <!--<colsName value='{name}'></colsName>&lt;!&ndash;参数标签属性名&ndash;&gt;-->
+                <!--<value value='{value}'></value>&lt;!&ndash;参数属性对应的值&ndash;&gt;-->
+                <!--<creator value='${guid}'></creator>-->
+                <!--<intime value='${fulldate}'></intime>-->
+            <!--</attriterator>-->
+        <!--</var>-->
+        <!--<var id='testVar' params='test' isreturn="true">-->
+            <!--<attriterator>&lt;!&ndash;循环参数集中的每个参数标签&ndash;&gt;-->
+                <!--<tablename value='reports'></tablename>-->
+                <!--<colsName value='{name}'></colsName>&lt;!&ndash;参数标签属性名&ndash;&gt;-->
+                <!--<value value='{value}'></value>&lt;!&ndash;参数属性对应的值&ndash;&gt;-->
+                <!--<creator value='${guid}'></creator>-->
+                <!--<intime value='${fulldate}'></intime>-->
+            <!--</attriterator>-->
+        <!--</var>-->
+        <!--<var id='testVar2' params='addparams' range="2" isreturn="true" errorid="111111" expect="1">-->
+            <!--<attriterator>&lt;!&ndash;循环参数集中的每个参数标签&ndash;&gt;-->
+                <!--<tablename value='reports'></tablename>-->
+                <!--<colsName value='{name}'></colsName>&lt;!&ndash;参数标签属性名&ndash;&gt;-->
+                <!--<value value='{value}'></value>&lt;!&ndash;参数属性对应的值&ndash;&gt;-->
+                <!--<creator value='${guid}'></creator>-->
+                <!--<intime value='${fulldate}'></intime>-->
+            <!--</attriterator>-->
+        <!--</var>-->
+        <!--<var id='testVar1' params='addparams' range="3" isreturn="true">-->
+            <!--<tablename value='reports'></tablename>-->
+            <!--<creator value='${guid}'></creator>-->
+            <!--<intime value='${fulldate}'></intime>-->
+            <!--<test value='#{test}'></test>-->
+        <!--</var>-->
+        <!--&lt;!&ndash;目前var命令中一个参数仅支持一个参数引用&ndash;&gt;-->
+        <!--<var id='testVar3' isreturn="true">-->
+            <!--<test1 value="#{test.test}"/>-->
+        <!--</var>-->
+        <!--&lt;!&ndash;只会执行结果集中的一条&ndash;&gt;-->
         <!--<insert id="varTest" params="test2" isreturn="true" errorid="900" msg="定义变量标签测试">-->
-        <!--<![CDATA[-->
+            <!--<![CDATA[-->
         <!--insert into test values(sys_id.nextval,sys_guid(),#{colsName}||'-'||#{value}||'-'||#{tablename},sysdate)-->
         <!--]]>-->
         <!--</insert>-->
-        <!--islist="true" 根据结果集批量执行-->
+        <!--&lt;!&ndash;islist="true" 根据结果集批量执行&ndash;&gt;-->
         <!--<insert id="varTest2" islist="true" params="test2" isreturn="true" errorid="900" msg="定义变量标签测试">-->
-        <!--<![CDATA[-->
-        <!--insert into test values(sys_id.nextval,sys_guid(),#{colsName}||'-'||#{value}||'-'||#{tablename}||'-'||'批量',sysdate)-->
-        <!--]]>-->
+            <!--<![CDATA[-->
+                <!--insert into test values(sys_id.nextval,sys_guid(),#{colsName}||'-'||#{value}||'-'||#{tablename}||'-'||'批量',sysdate)-->
+            <!--]]>-->
         <!--</insert>-->
 
 

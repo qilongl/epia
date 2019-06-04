@@ -4,10 +4,10 @@
     </Parameters>
     <Actions>
         <!--从指定目录下载-->
-        <var id="file1" isreturn="true">
-            <PATH value="f:\\temp"></PATH>
-            <ORINAME value="test.zip"></ORINAME>
+        <var id="file1" isreturn="false">
+            <PATH value="f:\\temp\\测试2019-06-03.TXT"></PATH>
+            <ORINAME value="2019-06-03.TXT"></ORINAME>
         </var>
-        <download id="download" params="file1" errorid="404"></download>
+        <download id="download" filename="123.txt" params="file1" errorid="404"></download>
     </Actions>
 </Epia>

@@ -2,7 +2,7 @@
 <Epia id="test1" datasource="dataSource" name="样例1" desc="基础增删改查">
     <Parameters>
         <test>
-            <test expression="[0-1]" desc="参数test只接受0，1"></test>
+            <!--<test expression="[0-1]" desc="参数test只接受0，1"></test>-->
             <test2 default=""></test2>
         </test>
     </Parameters>

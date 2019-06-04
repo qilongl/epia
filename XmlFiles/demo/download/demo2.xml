@@ -9,6 +9,6 @@
             union
             select 'f:\\temp\\接口列表.xlsx' as PATH,'接口列表.xlsx' as ORINAME from dual
         </select>
-        <download id="download" params="file1"></download>
+        <download id="download" filename="test.rar" params="file1"></download>
     </Actions>
 </Epia>

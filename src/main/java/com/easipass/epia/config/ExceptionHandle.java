@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionHandle {
     private static Logger logger = LoggerFactory.getLogger(ExceptionHandle.class);
-    ResponseResult rr = new ResponseResult();
+    private ResponseResult rr = new ResponseResult();
 
     @ExceptionHandler
     public String exceptionHandle(Exception e) {
-        logger.debug(ExceptionUtil.getErrorInfoFromException(e));
+        logger.error(ExceptionUtil.getErrorInfoFromException(e));
         rr.setStatusCode(ResponseResult.RESULT_STATUS_CODE_ERROR);
         rr.setMsg(ExceptionUtil.getErrorInfoFromException(e));
         return JSON.toJSONString(rr, JsonValueFilter.changeNullToString());

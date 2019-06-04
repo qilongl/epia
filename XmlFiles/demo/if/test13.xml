@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Epia id="test13" datasource="dataSource" name="IF样例" desc="IF命令用法">
     <Parameters>
-        <test>
+        <test islist="true">
             <test></test>
+            <name></name>
         </test>
     </Parameters>
     <Actions>
-        <var id="paramsInfo" isreturn="true" params="test">
-            <attriterator>
-                <paramName value="{name}"></paramName>
-                <paramValue value="{value}"></paramValue>
-            </attriterator>
-        </var>
-        <if test="#{test.test}=='1'">
-            <select id="check" isreturn="true" params="paramsInfo">
-                select '参数'||#{paramName}||'的值为：'||#{paramValue} as RESULT from dual
+        <!--<var id="paramsInfo" isreturn="true" params="test">-->
+            <!--<attriterator>-->
+                <!--<paramName value="{name}"></paramName>-->
+                <!--<paramValue value="{value}"></paramValue>-->
+            <!--</attriterator>-->
+        <!--</var>-->
+        <select id="check" isreturn="true"  expect="1">
+            select ID,NAME FROM sys_user where id=1
+        </select>
+        <if test="#{check.ID}=='1'|| #{check.name}=='123'">
+            <select id="result" isreturn="true">
+                select #{check.ID} as  ID,#{check.name} as NAME FROM dual
             </select>
+            <!--<error id="error" errorid="505" msg="#{check.ID} 等于1引发的异常"></error>-->
         </if>
-        <if test="#{test.test}!='1'">
-            <select id="check" isreturn="true" params="paramsInfo">
-                select '校验未通过! 入参为：'||'参数'||#{paramName}||'的值为：'||#{paramValue} as RESULT from dual
-            </select>
-        </if>
+        <!--<if test="#{test.test}=='1'">-->
+        <!--<if test="#{test.test}==#{test.name}">-->
+            <!--<select id="check" isreturn="true" params="paramsInfo">-->
+                <!--select '参数'||#{paramName}||'的值为：'||#{paramValue} as RESULT from dual-->
+            <!--</select>-->
+        <!--</if>-->
+        <!--<if test="#{test.test}!='1'">-->
+            <!--<select id="check" isreturn="true" params="paramsInfo">-->
+                <!--select '校验未通过! 入参为：'||'参数'||#{paramName}||'的值为：'||#{paramValue} as RESULT from dual-->
+            <!--</select>-->
+        <!--</if>-->
 
+        <!--<if test="#{test.test}==#{test.name}">-->
+            <!--<select id="check" isreturn="true">-->
+                <!--select #{test.test} as test, #{test.name} as name from dual-->
+            <!--</select>-->
+        <!--</if>-->
 
     </Actions>
 

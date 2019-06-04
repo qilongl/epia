@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Epia id="testSqlInsert" datasource="dataSource" name="sql注入" desc="sql注入测试">
+    <Parameters>
+        <test islist="true">
+            <id></id>
+            <name></name>
+        </test>
+    </Parameters>
+    <Actions>
+        <insert id="userInfo" isreturn="true" params="test" islist="false">
+            insert into table1 values (#{id},#{name})
+        </insert>
+        <select id="select" isreturn="true">
+            select * from table1
+        </select>
+    </Actions>
+</Epia>

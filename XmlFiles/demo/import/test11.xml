@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Epia id="test11" datasource="dataSource" name="IMPORT样例" desc="引用其他业务配置文件命令用法">
     <Parameters>
+        <test>
+            <name></name>
+        </test>
     </Parameters>
     <Actions>
         <!--&lt;!&ndash;引用其他配置文件&ndash;&gt;-->
@@ -12,22 +15,29 @@
             <!--<userName value="#{username}"></userName>-->
         <!--</var>-->
 
+        <select id="getIdByName" isreturn="true" params="test" errorid="123">
+            select ID from sys_user where name = #{name}
+        </select>
         <!--构建参数    var命令构建的参数是一个list-->
         <var id="buildPrams" isreturn="true">
-            <test value="1"></test>
-            <test2 value=""></test2>
+            <name value="#{test.name}"></name>
+            <!--<test2 value=""></test2>-->
+        </var>
+        <var id="buildPrams1" isreturn="true">
+            <id value="#{getIdByName.ID}"></id>
         </var>
         <!--被调用的接口参数均需接收List参数-->
         <!--  todo 调用的接口没有重新加载（目前是从内存中加载的接口） -->
-        <import id="import2" source="base-test-test1" errorid="import1error" isreturn="true">
+        <import id="import2" source="base-test-test17" errorid="import1error" isreturn="true">
             <test params="buildPrams"></test>
+            <test1 params="buildPrams1"></test1>
         </import>
         <!--返还的条数不是数据库执行的条数-->
-        <update id="insert" islist="true" params="Retrieve22" isreturn="true">
-            <![CDATA[
-            insert into test values (sys_id.nextval,sys_guid(),#{UUID},sysdate)
-            ]]>
-        </update>
+        <!--<update id="insert" islist="true" params="Retrieve22" isreturn="true">-->
+            <!--<![CDATA[-->
+            <!--insert into test values (sys_id.nextval,sys_guid(),#{UUID},sysdate)-->
+            <!--]]>-->
+        <!--</update>-->
 
 
     </Actions>

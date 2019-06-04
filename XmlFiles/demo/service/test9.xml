@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Epia id="test9" datasource="dataSource" name="WebService样例" desc="WebService命令用法">
     <Parameters>
-        <test>
-            <test></test>
-        </test>
         <webService>
             <userId default="123"></userId>
         </webService>

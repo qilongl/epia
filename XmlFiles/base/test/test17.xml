@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Epia id="test17" datasource="dataSource" name="压力测试样例" desc="压力测试">
     <Parameters>
-        <!--<test>-->
-            <!--<userName></userName>-->
-        <!--</test>-->
+        <test islist="true">
+            <name></name>
+        </test>
+        <test1 islist="true">
+            <id></id>
+        </test1>
     </Parameters>
     <Actions>
         <!--<select id="userInfo" params="test" isreturn="true">-->
-            <!--select * from sys_user su where su.objname = #{userName}-->
+        <!--select * from sys_user su where su.objname = #{userName}-->
         <!--</select>-->
-        <select id="userInfo" isreturn="true">
-            select 1 as test from dual
+        <select id="userInfo" isreturn="true" params="test" errorid="123">
+            select * from sys_user where name = #{name} and id =#{test1.id}
         </select>
+
+        <!--<delete id="dropTable" isreturn="true">-->
+        <!--drop table test-->
+        <!--</delete>-->
+        <!--数据库中create 、drop 命令无法回滚-->
+        <!--<delete id="createTable" isreturn="true">-->
+            <!--<![CDATA[-->
+            <!--create table Table3(-->
+            <!--id varchar2(32),-->
+            <!--name varchar2(64)-->
+            <!--)]]>-->
+        <!--</delete>-->
+        <!--<delete id="dropTable" isreturn="true">-->
+            <!--drop table table2-->
+        <!--</delete>-->
+
     </Actions>
 </Epia>

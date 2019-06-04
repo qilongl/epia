@@ -51,13 +51,15 @@ public class ConvertAction implements Serializable {
 
     public static void main(String[] args) throws ClassNotFoundException {
         try {
-            Class<?> cls = Class.forName("com.easipass.epia.test.Test2");
+            Class<?> cls = Class.forName("com.easipass.epia.test.Test1");
             Object obj = cls.newInstance();
+            for (Method method : cls.getMethods()) {
+                System.out.println(method.getName());
+            }
             Method method = cls.getMethod("test", String.class);
             Object result = method.invoke(obj, "刘奇龙");
-            System.out.println(result);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 }

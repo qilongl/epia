@@ -57,7 +57,7 @@ public class XmlBusiConfig implements Serializable {
         init(file);
     }
 
-    //入参原始值
+    // 入参原始值
     private JSONObject inParams;
 
     // 参数集合

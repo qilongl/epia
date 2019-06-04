@@ -16,6 +16,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.List;
@@ -87,7 +88,7 @@ public class ImportAction implements Serializable {
             Map<String, Object> resultMap = sourceBusiConfig.exec(jsonObject, fileMap);// 调用
             String repeatedKey = hasRepeatedKey(xmlBusiConfig.getCmdList(), resultMap);
             if (repeatedKey != null)
-                throw new UnsupportedOperationException("被import的业务文件" + cmd.getSource() + ".xml中包含有与主" + "-" + xmlBusiConfig.getId() + "xml中重复的id定义:" + repeatedKey);
+                throw new UnsupportedOperationException("被import的业务文件" + cmd.getSource() + ".xml中包含有与主" + "-" + xmlBusiConfig.getId() + ".xml中重复的id定义:" + repeatedKey);
             result.putAll(resultMap);
         } catch (UserException ex) {
             throw new UserException(ex.getId(), ex.getErrorId(), "", ex);

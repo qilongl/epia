@@ -43,12 +43,14 @@ public class DownLoadAction implements Serializable {
         List<Map<String, Object>> result = new ArrayList<>();
         try {
             String params = cmd.getParams();
+            String fileName = cmd.getFilename();
             cmd.setIsreturn(true);
             List<String> pathList = new ArrayList<>();
+            String fileNameValue = xmlBusiConfig.getValue(cmd, fileName);
             List<Map<String, Object>> configResult = TypeUtil.changeToListMap(xmlBusiConfig.getParamsFromInParams_CmdResult(params, inParams));
             if (configResult.size() > 1) // 多个附件
             {
-                zipDownload(configResult, pathList, result);
+                zipDownload(configResult, pathList, result, fileNameValue);
 //                /**
 //                 *  写入zip文件到磁盘
 //                 */
@@ -95,7 +97,7 @@ public class DownLoadAction implements Serializable {
             } else // 单个附件
             {
                 Map<String, Object> param = configResult.get(0);
-                String fileName = param.get(ORINAME).toString();
+                fileName = "".equals(fileNameValue) ? param.get(ORINAME).toString() : fileNameValue;
                 String path = param.get(PATH).toString();
                 pathList.add(fileName);
                 Map<String, Object> rr = new HashedMap();
@@ -125,7 +127,7 @@ public class DownLoadAction implements Serializable {
      * @param result
      * @throws Exception
      */
-    public void zipDownload(List<Map<String, Object>> configResult, List<String> pathList, List<Map<String, Object>> result) throws Exception {
+    public void zipDownload(List<Map<String, Object>> configResult, List<String> pathList, List<Map<String, Object>> result, String fileNameValue) throws Exception {
         /**
          *  写入zip文件到磁盘
          */
@@ -158,8 +160,13 @@ public class DownLoadAction implements Serializable {
             in.close();
         }
         zout.close();
-        // 取文件总数加入文件名称中
-        zipFileName = zipFileName.append("+" + configResult.size()).append(".zip");
+        if (!"".equals(fileNameValue)) {
+            zipFileName = new StringBuffer();
+            zipFileName.append(fileNameValue);
+        } else {
+            // 取文件总数加入文件名称中
+            zipFileName = zipFileName.append("+" + configResult.size()).append(".zip");
+        }
         // 文件名中加上标记
         zipFileName = zipFileName.append("@download");
         /***

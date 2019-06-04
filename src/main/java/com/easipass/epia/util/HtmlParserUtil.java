@@ -251,9 +251,9 @@ public class HtmlParserUtil {
     }
     public static void main(String args[])throws Exception
     {
-        String str="djfkj    dkfj dkjfkd&nbsp;fjkdjf    kdjfkd\ndjfkdjfkdjkfd\tfdjkfjdk";
-        str=filterValue(str);
-        System.out.println(str);
+//        String str="djfkj    dkfj dkjfkd&nbsp;fjkdjf    kdjfkd\ndjfkdjfkdjkfd\tfdjkfjdk";
+//        str=filterValue(str);
+//        System.out.println(str);
 
         String sql="select * from report where id=#{reports.reportid} and name={{{${{{username}}}}";
         StringBuffer name= HtmlParserUtil.replace(new StringBuffer(sql),"${","}","?");

@@ -7,7 +7,7 @@
     </Parameters>
     <Actions>
         <var id="file1" isreturn="true">
-            <PATH value="F:\temp\1.txt"></PATH>
+            <PATH value="F:\temp"></PATH>
         </var>
         <var id="file2" isreturn="true">
             <PATH value="F:\\temp\\2.txt"></PATH>

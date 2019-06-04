@@ -2,25 +2,30 @@
 <Epia id="test2" datasource="dataSource" name="测试开发环境新增xml配置文件自动加载" desc="测试2">
     <Parameters>
         <test>
-            <test></test>
-            <test2 default=""></test2>
+            <PAGENUM/>
+            <PAGESIZE/>
+            <PROP default=""/>
+            <SORT default="D"/>
         </test>
     </Parameters>
     <Actions>
-        <select id="abc" isreturn="true" errorid="1" params="test">
+        <select id="abc" isreturn="true" errorid="1" params="test" ispaging="true">
             <![CDATA[
-            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as QQ ,#{test} as test FROM dual
+            select * from sys_function
+            <if test="#{PROP}==''">
+                ORDER BY CRT_DT
+            </if>
+            <if test="#{PROP}=='OBJID'">
+                ORDER BY OBJID
+            </if>
+            <if test="#{SORT}=='D'">
+                DESC
+            </if>
+            <if test="#{SORT}=='A'">
+                ASC
+            </if>
             ]]>
         </select>
-        <select id="qwe" isreturn="true" errorid="2">
-            <![CDATA[
-            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as QQ FROM dual
-            ]]>
-        </select>
-        <select id="qwe2" isreturn="true" errorid="2">
-            <![CDATA[
-            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time   FROM dual
-            ]]>
-        </select>
+
     </Actions>
 </Epia>

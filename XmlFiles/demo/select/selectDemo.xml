@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Epia id="selectDemo" datasource="dataSource" name="查询样例" desc="查询标签用法">
+<Epia id=" ." datasource="dataSource" name="查询样例" desc="查询标签用法">
     <Parameters>
         <test>
             <test></test>
@@ -26,9 +26,9 @@
     <Actions>
         <!--标签必填属性：id-->
         <!--该结果集不会输出-->
-        <select id="Retrieve">
+        <select id="Retrieve" isreturn="true">
             <![CDATA[
-            select 1 as ID, to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time from dual
+            select 1 as ID, to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'),#{millisecond}  from dual
             ]]>
         </select>
         <!--是否输出结果集：isreturn="true" 时输出-->
@@ -70,23 +70,23 @@
             ]]>
         </select>
         <!--默认参数集是数组时，取数组最后一个对象，数组参数集无法直接引用，必须指定为默认参数集-->
-        <!--<select id="Retrieve6" params="test4" isreturn="true" errorid="3">-->
-        <!--<![CDATA[-->
-        <!--SELECT 'Retrieve6' as ID, to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID ,#{name} as Name FROM dual-->
-        <!--]]>-->
-        <!--</select>-->
+        <select id="Retrieve6" params="test4" isreturn="true" errorid="3">
+        <![CDATA[
+        SELECT 'Retrieve6' as ID, to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID ,#{name} as Name FROM dual
+        ]]>
+        </select>
         <!--依据默认参数集批量更新-->
-        <update id="Retrieve6" params="test4" isreturn="true" errorid="3123">
-            <![CDATA[
-            insert into test values(sys_id.nextval,sys_guid(),#{name},sysdate)
-            ]]>
-        </update>
+        <!--<update id="Retrieve6" params="test4" isreturn="true" errorid="3123">-->
+            <!--<![CDATA[-->
+            <!--insert into test values(sys_id.nextval,sys_guid(),#{name},sysdate)-->
+            <!--]]>-->
+        <!--</update>-->
         <!--引用其他结果集作为入参 指定默认参数集-->
-        <!--<select id="Retrieve7" params="Retrieve6" isreturn="true" errorid="3">-->
-        <!--<![CDATA[-->
-        <!--SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID ,#{ID} as Name FROM dual-->
-        <!--]]>-->
-        <!--</select>-->
+        <select id="Retrieve7" params="Retrieve6" isreturn="true" errorid="3">
+        <![CDATA[
+        SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  ,rawtohex(sys_guid()) as UUID ,#{NAME} as Name FROM dual
+        ]]>
+        </select>
         <!--直接引用 #{参数集.参数名}-->
         <!--<select id="Retrieve8" isreturn="true" errorid="3">-->
         <!--<![CDATA[-->

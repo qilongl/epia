@@ -1,4 +1,4 @@
--- Create table
+-- Create table 接口表
 create table SYS_FUNCTION
 (
   id            INTEGER not null,
@@ -56,7 +56,7 @@ comment on column SYS_FUNCTION.source
   is '接口文件二进制存储';
   
 
--- Create table
+-- Create table 接口校验表
 create table SYS_TOKEN_CLOUD
 (
   id               NUMBER not null,
@@ -72,7 +72,7 @@ create table SYS_TOKEN_CLOUD
   tolerant_sec     NUMBER,
   check_ciphertext NUMBER
 )
-tablespace JSPANG
+tablespace SYSTEM
   pctfree 10
   initrans 1
   maxtrans 255
@@ -109,9 +109,13 @@ comment on column SYS_TOKEN_CLOUD.tolerant_sec
 comment on column SYS_TOKEN_CLOUD.check_ciphertext
   is '是否验证密文';
 
+-- 接口校验信息
+insert into sys_token_cloud (ID, ACCOUNT, TOKEN_KEY, DESCRIPTION, STATUS, TERM_TYPE, TERM_ID, START_TIME, END_TIME, LAST_TIME, TOLERANT_SEC, CHECK_CIPHERTEXT)
+values (1, 'easipass', 'token_easipass', '亿通xml解析组件接口校验', 0, 'pc', '192.168.12.150', to_date('12-10-2018', 'dd-mm-yyyy'), to_date('12-10-2020', 'dd-mm-yyyy'), to_date('08-06-2018 11:20:15', 'dd-mm-yyyy hh24:mi:ss'), 50000000, 0);
 
+commit;
 
--- Create sequence 
+-- Create sequence 序列
 create sequence SYS_ID
 minvalue 1
 maxvalue 999999999999999999999

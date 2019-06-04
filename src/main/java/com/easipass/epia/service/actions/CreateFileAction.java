@@ -40,7 +40,8 @@ public class CreateFileAction implements Serializable {
             String fileName = cmd.getFilename();
             String params = cmd.getParams();
             if (!StringHelper.isNotNull(fileName))
-                throw new UnsupportedOperationException(cmd.getCmdType() + "标签" + cmd.getId() + " 需要给出明确的filename属性!");
+//                throw new UnsupportedOperationException(cmd.getCmdType() + "标签" + cmd.getId() + " 需要给出明确的filename属性!");
+                fileName = UUID.randomUUID()  + TXT.toLowerCase();
 
             String propertiesName = xmlBusiConfig.getValue(cmd, cmd.getPropertyname());
             String fileNameValue = xmlBusiConfig.getValue(cmd, fileName);
@@ -60,7 +61,8 @@ public class CreateFileAction implements Serializable {
                     dir.mkdirs();
                 filePath = filePath + fileNameValue;
             } else {
-                filePath = dirPath + File.separator + UUID.randomUUID();
+//                filePath = dirPath + File.separator + UUID.randomUUID();
+                filePath = dirPath + File.separator + fileNameValue;
             }
             String fileType = fileNameValue.substring(fileNameValue.lastIndexOf("."), fileNameValue.length());
             switch (fileType.toUpperCase()) {
@@ -202,6 +204,56 @@ public class CreateFileAction implements Serializable {
                 fileWriter.close();
             }
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        StringBuffer titleBuffer = new StringBuffer();
+        StringBuffer contentBuffer = new StringBuffer();
+        List<Map<String, Object>> list = getVirtuData();
+        List<String> title = new ArrayList<>();
+        Map<String, Object> oneData = null;
+        if (list.size() > 0) {
+            oneData = list.get(0);
+        }
+        Iterator iterable = oneData.keySet().iterator();
+        while (iterable.hasNext()) {
+            String key = iterable.next().toString();
+            title.add(key);
+            titleBuffer.append(key).append("\t");
+        }
+        titleBuffer.append("\r\n");
+        for (int i = 0; i < list.size(); i++) {
+            Map map = list.get(i);
+            for (int j = 0; j < title.size(); j++) {
+                contentBuffer.append(map.get(title.get(j))).append("\t");
+            }
+            contentBuffer.append("\r\n");
+        }
+        contentBuffer = titleBuffer.append(contentBuffer);
+
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(new File("C:\\Users\\lql\\Desktop\\" + StringHelper.getUUID()) + ".txt");
+            fileWriter.write(contentBuffer.toString());
+            fileWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (null != fileWriter)
+                fileWriter.close();
+        }
+    }
+
+    private static List<Map<String, Object>> getVirtuData() {
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (int j = 0; j < 10; j++) {
+            Map map = new TreeMap();
+            for (int i = 0; i < 10; i++) {
+                map.put("field" + i, StringHelper.getUUID());
+            }
+            list.add(map);
+        }
+        return list;
     }
 
 }

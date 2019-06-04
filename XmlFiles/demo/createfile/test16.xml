@@ -6,9 +6,15 @@
         </test>
     </Parameters>
     <Actions>
-        <select id="userInfo" params="test" isreturn="true">
-            select * from sys_user su where su.objname = #{userName}
+        <select id="userInfo" isreturn="false">
+            select * from sys_function
         </select>
+        <!--不指定目录时，使用系统默认附件目录 文件名为32位字符串（uuid）-->
+        <createfile id="writeTxt1" filename="测试.txt" params="userInfo"  errorid="222" isreturn="true"/>
+        <deletefile id="deleteFile1" params="writeTxt1" isreturn="true"></deletefile>
+        <!--<select id="userInfo" params="test" isreturn="true">-->
+            <!--select * from sys_user su where su.objname = #{userName}-->
+        <!--</select>-->
         <!--<select id="functionList" params="test" isreturn="true">-->
             <!--select id,-->
             <!--objid,-->
@@ -37,10 +43,10 @@
         <!--<download id="downloadTest" params="writeTxt1" errorid="222"></download>-->
 
         <!--创建xml文件时需指定propertyname属性 且参数列表中存在 propertyname 对应的属性-->
-        <var id="fileName" isreturn="true">
-            <fileName value="${guid}.txt"></fileName>
-            <fileName1 value="测试${simpledate}-${guid}.TXT"></fileName1>
-        </var>
+        <!--<var id="fileName" isreturn="true">-->
+            <!--&lt;!&ndash;<fileName value="${guid}.txt"></fileName>&ndash;&gt;-->
+            <!--<fileName value="测试${simpledate}.TXT"></fileName>-->
+        <!--</var>-->
         <!--<createfile id="writeXml" filename="#{fileName.fileName}" params="userInfo"  propertyname="OBJNAME" basesavepath="f:" savepath="temp" errorid="333" isreturn="true"/>-->
         <!--<createfile id="writeXml123" filename="#{fileName.fileName}" params="userInfo"  propertyname="OBJNAME" basesavepath="f:"  errorid="333" isreturn="true"/>-->
         <!--<createfile id="QWWQR"  params="userInfo"  filename="#{fileName.fileName}" isreturn="true"/>-->
