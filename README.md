@@ -2,7 +2,7 @@
 
 ## 简介
 
-[EPIA](http://192.168.129.181/xml-analysis-component) EPIA以XML文件作为接口的基本单位，可灵活定义参数和数据操作行为，并可以在接口变更后做到即时生效。
+[EPIA](http://192.168.129.181/xml-analysis-component) 以XML文件作为接口的基本单位，可灵活定义参数和数据操作行为，并可以在接口变更后做到即时生效。
 
 
 - [使用文档](http://192.168.129.181/xml-analysis-component)
@@ -31,7 +31,6 @@
 > [Epia服务](./src/main/java/com/easipass/epia/EpiaApplication.java)
 
 ## 更多
-浏览器访问 - [Epia主页](http://192.168.129.181/xml-analysis-component)
 
 更多信息请参考 [使用文档](http://192.168.129.181/xml-analysis-component)
  
