@@ -57,7 +57,7 @@ public class SqlAction implements Serializable {
                 // 入参模型
                 Parameters inParametersModel = xmlBusiConfig.getParametersMap().get(action.getParams());
                 // 批量：由传入参islist标记决定
-                if (inParametersModel.islist()) {
+                if (inParametersModel.isIslist()) {
                     JSONArray inParamArray = inParams.getJSONArray(action.getParams());
                     for (int i = 0; i < inParamArray.size(); i++) {
                         // 单个入参赋默认值

@@ -5,12 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.easipass.epia.service.ComponentService;
-import com.easipass.epia.service.TokenCloudService;
 import com.easipass.epia.util.*;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +42,8 @@ public class ComponentController {
     @Autowired
     ComponentService componentService;
 
-    @Autowired
-    TokenCloudService tokenCloudService;
+//    @Autowired
+//    TokenCloudService tokenCloudService;
 
     @Value("${server.port}")
     String port;
@@ -66,15 +63,16 @@ public class ComponentController {
     @RequestMapping(value = "/componentService", method = {RequestMethod.GET, RequestMethod.POST})
     public void jsonParamsRquest(@RequestParam(value = "jsonParams", required = true) String jsonParams,
                                  HttpServletRequest request, HttpServletResponse response) {
-        ResponseResult rr = new ResponseResult();
+//        ResponseResult rr = new ResponseResult();
+        ApiResult apiResult = new ApiResult();
         String url = getRestUrl("extendService");
-        ResponseResult rr_token = tokenCloudService.checkTokenInfoByAccount("", jsonParams);
-        if (rr_token.getStatusCode().equals(ResponseResult.RESULT_STATUS_CODE_SUCCESS)) {
-            jsonParams = rr_token.getResult().toString();
-            exec(jsonParams, rr, request, response, url);
-        } else {
-            writerResult(JSON.toJSONString(rr_token, JsonValueFilter.changeNullToString()), response);
-        }
+//        ResponseResult rr_token = tokenCloudService.checkTokenInfoByAccount("", jsonParams);
+//        if (rr_token.getStatusCode().equals(ResponseResult.RESULT_STATUS_CODE_SUCCESS)) {
+//            jsonParams = rr_token.getResult().toString();
+        exec(jsonParams, apiResult, request, response, url);
+//        } else {
+//            writerResult(JSON.toJSONString(rr_token, JsonValueFilter.changeNullToString()), response);
+//        }
     }
 
     /**
@@ -86,24 +84,25 @@ public class ComponentController {
     @ApiOperation("Url请求处理")
     @RequestMapping(value = "/easyComponentService", method = {RequestMethod.GET})
     public void urlRquest(HttpServletRequest request, HttpServletResponse response) {
-        ResponseResult rr = new ResponseResult();
+        ApiResult apiResult = new ApiResult();
         String paramsUrl = request.getQueryString();
         String jsonParams = null;
-        String url = getRestUrl( "extendService");
+        String url = getRestUrl("extendService");
         try {
             String decodeUrl = URLDecoder.decode(paramsUrl, "utf-8");
-            ResponseResult rr_token = tokenCloudService.checkTokenInfoByAccount(decodeUrl, null);
-            if (rr_token.getStatusCode().equals(ResponseResult.RESULT_STATUS_CODE_SUCCESS)) {
-                jsonParams = JSON.toJSONString(parseUrl2JsonObj(rr_token.getResult().toString()));
-                exec(jsonParams, rr, request, response, url);
-            } else
-                writerResult(JSON.toJSONString(rr_token, JsonValueFilter.changeNullToString()), response);
+//            ResponseResult rr_token = tokenCloudService.checkTokenInfoByAccount(decodeUrl, null);
+//            if (rr_token.getStatusCode().equals(ResponseResult.RESULT_STATUS_CODE_SUCCESS)) {
+//                jsonParams = JSON.toJSONString(parseUrl2JsonObj(rr_token.getResult().toString()));
+            exec(jsonParams, apiResult, request, response, url);
+//            } else
+//                writerResult(JSON.toJSONString(rr_token, JsonValueFilter.changeNullToString()), response);
         } catch (Exception ex) {
             ex.printStackTrace();
-            rr = new ResponseResult();
-            rr.setMsg("请求参数错误!" + OutFormater.stackTraceToString(ex));
-            rr.setStatusCode(ResponseResult.RESULT_STATUS_CODE_ERROR);
-            writerResult(JSON.toJSONString(rr, JsonValueFilter.changeNullToString()), response);
+            apiResult = new ApiResult();
+            apiResult.setFlag(Constants.FLAG_F);
+            apiResult.setErrorInfo("请求参数错误!" + OutFormater.stackTraceToString(ex));
+            apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
+            writerResult(JSON.toJSONString(apiResult, JsonValueFilter.changeNullToString()), response);
             return;
         }
     }
@@ -114,17 +113,18 @@ public class ComponentController {
     @ApiOperation("重新加载业务文件")
     @RequestMapping(value = "/componentService/reloadFunction", method = {RequestMethod.GET, RequestMethod.POST})
     public String reloadFunction(@RequestParam(value = "jsonParams", required = true) String jsonParams) {
-        ResponseResult rr = new ResponseResult();
+        ApiResult apiResult = new ApiResult();
         JSONObject jsonObject = JSONObject.parseObject(jsonParams);
         String key = jsonObject.getString("key");
         String url = getRestUrl("extendService/reloadFunction");
         try {
-            rr = componentService.reloadFunction(url, key);
+            apiResult = componentService.reloadFunction(url, key);
         } catch (Exception ex) {
-            rr.setStatusCode(ResponseResult.RESULT_STATUS_CODE_ERROR);
-            rr.setMsg("重新加载" + key + "失败,调用加载接口异常！" + ex.getMessage());
+            apiResult.setFlag(Constants.FLAG_F);
+            apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
+            apiResult.setErrorInfo("重新加载" + key + "失败,调用加载接口异常！" + ex.getMessage());
         }
-        return JSON.toJSONString(rr, JsonValueFilter.changeNullToString());
+        return JSON.toJSONString(apiResult, JsonValueFilter.changeNullToString());
     }
 
     /**
@@ -187,20 +187,20 @@ public class ComponentController {
      * @param request
      * @param response
      */
-    public void exec(String jsonParams, ResponseResult rr, HttpServletRequest request, HttpServletResponse response, String url) {
+    public void exec(String jsonParams, ApiResult apiResult, HttpServletRequest request, HttpServletResponse response, String url) {
         try {
             //处理请求中的附件及调用服务端
-            rr = callService(jsonParams, request, url);
+            apiResult = callService(jsonParams, request, url);
             //检测是否有附件下载
-            int fileCode = writeFiles(rr, response);
+            int fileCode = writeFiles(apiResult, response);
             if (fileCode == 1)
                 return;
         } catch (Exception ex) {
             ex.printStackTrace();
-            rr.setMsg("调用服务出错!" + OutFormater.stackTraceToString(ex));
-            rr.setStatusCode(ResponseResult.RESULT_STATUS_CODE_ERROR);
+            apiResult.setErrorInfo("调用服务出错!" + OutFormater.stackTraceToString(ex));
+            apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
         }
-        String s = JSON.toJSONString(rr, JsonValueFilter.changeNullToString());
+        String s = JSON.toJSONString(apiResult, JsonValueFilter.changeNullToString());
         JSONObject jsonObject = JSON.parseObject(s);
         String resStr = JSON.toJSONStringWithDateFormat(jsonObject, "yyyy-MM-dd HH:mm:ss", SerializerFeature.DisableCircularReferenceDetect);
         writerResult(resStr, response);
@@ -210,14 +210,13 @@ public class ComponentController {
     /**
      * 响应文件流
      *
-     * @param rr
      * @param response
      * @return
      * @throws Exception
      */
-    private int writeFiles(ResponseResult rr, HttpServletResponse response) throws Exception {
-        if (ResponseResult.RESULT_STATUS_CODE_SUCCESS.equals(rr.getStatusCode())) {
-            Map<String, Map<String, List<Map<String, Object>>>> result = (Map<String, Map<String, List<Map<String, Object>>>>) rr.getResult();
+    private int writeFiles(ApiResult apiResult, HttpServletResponse response) throws Exception {
+        if (Constants.FLAG_T.equals(apiResult.getFlag())) {
+            Map<String, Map<String, List<Map<String, Object>>>> result = (Map<String, Map<String, List<Map<String, Object>>>>) apiResult.getData();
             Iterator iterator = result.keySet().iterator();
             while (iterator.hasNext()) {
                 //取出单个函数的结果集
@@ -277,11 +276,11 @@ public class ComponentController {
         }
     }
 
-    private ResponseResult callService(String jsonParams, HttpServletRequest request, String url) {
+    private ApiResult callService(String jsonParams, HttpServletRequest request, String url) {
         /**
          * 读取请求中的附件，转成字节流
          */
-        ResponseResult rr = new ResponseResult();
+        ApiResult apiResult = new ApiResult();
         MultiValueMap<String, MultipartFile> fileMap = null;
         //创建一个通用的多部分解析器
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
@@ -291,17 +290,17 @@ public class ComponentController {
         }
         // 调用服务端
         try {
-            rr = componentService.service(jsonParams, fileMap, url);
+            apiResult = componentService.service(jsonParams, fileMap, url);
         } catch (Exception ex) {
             ex.printStackTrace();
-            rr.setMsg("调用后台服务出错，请于管理员联系！" + OutFormater.stackTraceToString(ex));
-            rr.setStatusCode(ResponseResult.RESULT_STATUS_CODE_ERROR);
+            apiResult.setErrorInfo("调用后台服务出错，请于管理员联系！" + OutFormater.stackTraceToString(ex));
+            apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
         }
         //---------------释放缓存------------------------------------------------------
         fileMap = null;
         jsonParams = null;
         //----------------end---------------------------------------------------------
-        return rr;
+        return apiResult;
     }
 
     private String getRestUrl(String serverName) {

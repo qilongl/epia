@@ -1,6 +1,5 @@
 package com.easipass.epia.service;
 
-import com.carrotsearch.sizeof.RamUsageEstimator;
 import com.easipass.epia.beans.Action;
 import com.easipass.epia.beans.SysProperties;
 import com.easipass.epia.beans.XmlBusiConfig;
@@ -9,9 +8,9 @@ import com.easipass.epia.db.DBService;
 import com.easipass.epia.db.DataSourceConfig;
 import com.easipass.epia.exception.UserException;
 import com.easipass.epia.interfaces.IXmlBusiService;
+import com.easipass.epia.util.ApiResult;
+import com.easipass.epia.util.Constants;
 import com.easipass.epia.util.ExceptionUtil;
-import com.easipass.epia.util.FileUtil;
-import com.easipass.epia.util.ResponseResult;
 import com.easipass.epia.util.StringHelper;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -36,11 +35,11 @@ public class XmlBusiService implements IXmlBusiService {
     private XmlBusiConfigContainer xmlBusiConfigContainer;
 
     @Override
-    public ResponseResult exec(String jsonparam, Map<String, List<Map<String, byte[]>>> fileMap) {
+    public ApiResult exec(String jsonparam, Map<String, List<Map<String, byte[]>>> fileMap) {
         /**
          * 返回对象
          */
-        ResponseResult rs = new ResponseResult();
+        ApiResult apiResult = new ApiResult();
         /**
          * 返回对象的结果
          */
@@ -121,8 +120,9 @@ public class XmlBusiService implements IXmlBusiService {
                     dpService = bsconfig.getDBService();
 
                     resultObject.put(key, result);
-                    rs.setStatusCode(ResponseResult.RESULT_STATUS_CODE_SUCCESS);
-                    rs.setMsg("业务执行成功！");
+                    apiResult.setFlag(Constants.FLAG_T);
+//                    apiResult.(ResponseResult.RESULT_STATUS_CODE_SUCCESS);
+//                    apiResult.setMsg("业务执行成功！");
                     Calendar endTime = Calendar.getInstance();
                     logger.debug(key + "耗时：" + (endTime.getTimeInMillis() - beginTime.getTimeInMillis()) + "ms");
                 }
@@ -134,8 +134,9 @@ public class XmlBusiService implements IXmlBusiService {
                 dpService.commit();
             } catch (UserException e) {
                 logger.error(moduleName + "-" + functionName + "的" + e.getId() + "业务执行异常，异常编码:" + e.getErrorId() + ",操作撤销！", e.getMessage());
-                rs.setStatusCode(e.getErrorId());
-                rs.setMsg(e.getMessage());
+                apiResult.setFlag(Constants.FLAG_F);
+                apiResult.setErrorCode(e.getErrorId());
+                apiResult.setErrorInfo(e.getMessage());
                 if (null != bsconfig)
                     dpService = bsconfig.getDBService();
                 if (null != dpService)
@@ -145,8 +146,9 @@ public class XmlBusiService implements IXmlBusiService {
             //执行失败，回滚事务
             ex.printStackTrace();
             logger.error(moduleName + "-" + functionName + "业务执行异常,操作撤销！", ExceptionUtil.getErrorInfoFromException(ex));
-            rs.setStatusCode(ResponseResult.RESULT_STATUS_CODE_ERROR);
-            rs.setMsg(moduleName + "-" + functionName + "业务执行时发生错误！" + ExceptionUtil.getErrorInfoFromException(ex));
+            apiResult.setFlag(Constants.FLAG_F);
+            apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
+            apiResult.setErrorInfo(moduleName + "-" + functionName + "业务执行时发生错误！" + ExceptionUtil.getErrorInfoFromException(ex));
             /**
              * 执行过程中出现异常,回滚事务
              */
@@ -155,12 +157,12 @@ public class XmlBusiService implements IXmlBusiService {
             if (null != dpService)
                 dpService.rollback();
         }
-        rs.setResult(resultObject);
+        apiResult.setData(resultObject);
         /**
          * 释放缓存资源
          */
         release(jsonparam, fileMap);
-        return rs;
+        return apiResult;
     }
 
     /**

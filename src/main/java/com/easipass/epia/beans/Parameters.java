@@ -1,5 +1,6 @@
 package com.easipass.epia.beans;
 
+import lombok.Data;
 import org.dom4j.Element;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.Map;
  * XML中<Parameters></Parameters>中一级标签，参数的父级对象
  * 入参模型（包含入参基础单位）
  **/
+@Data
 public class Parameters implements Serializable {
 
     public Parameters() {
@@ -86,29 +88,5 @@ public class Parameters implements Serializable {
      * value:该参数对应的参数模型
      */
     private Map<String, Parameter> parameterMap = new HashMap<>();
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean islist() {
-        return islist;
-    }
-
-    public void setIslist(boolean islist) {
-        this.islist = islist;
-    }
-
-    public Map<String, Parameter> getParameterMap() {
-        return parameterMap;
-    }
-
-    public void setParameterMap(Map<String, Parameter> parameterMap) {
-        this.parameterMap = parameterMap;
-    }
 
 }

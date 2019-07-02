@@ -68,46 +68,46 @@ public class StringHelper {
      * @return
      * @throws Exception
      */
-    public static ResponseResult getRRFromStream(String rs) throws Exception {
-        ResponseResult rr = null;
+    public static ApiResult getRRFromStream(String rs) throws Exception {
+        ApiResult apiResult = null;
         Object o2 = null;
         ByteArrayInputStream bis = new ByteArrayInputStream(new BASE64Decoder().decodeBuffer(rs));
         ObjectInputStream ois = new ObjectInputStream(bis);
         o2 = ois.readObject();
         bis.close();
         ois.close();
-        rr = (ResponseResult) o2;
-        return rr;
+        apiResult = (ApiResult) o2;
+        return apiResult;
     }
 
-    public static void main(String[] args) throws Exception {
-        ResponseResult rr1 = new ResponseResult();
-        ResponseResult rr2 = new ResponseResult();
-        rr1.setMsg("Hello World!");
-        rr1.setResult(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(rr1);
-        oos.flush();
-        oos.close();
-        baos.close();
-        byte[] bytes = baos.toByteArray();
-        String encodeString = new BASE64Encoder().encode(bytes);
-        System.out.println(encodeString);
-        //-----------------------------------------------------
-
-        byte[] result2 = new BASE64Decoder().decodeBuffer(encodeString);
-        ByteArrayInputStream bais = new ByteArrayInputStream(result2);
-        ObjectInputStream ois = new ObjectInputStream(bais);
-        Object object = ois.readObject();
-        bais.close();
-        ois.close();
-        rr2 = (ResponseResult) object;
-        System.out.println(rr2.toString());
-        System.out.println(JSON.toJSONString(rr2));
-
-    }
+//    public static void main(String[] args) throws Exception {
+//        ResponseResult rr1 = new ResponseResult();
+//        ResponseResult rr2 = new ResponseResult();
+//        rr1.setMsg("Hello World!");
+//        rr1.setResult(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+//
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        ObjectOutputStream oos = new ObjectOutputStream(baos);
+//        oos.writeObject(rr1);
+//        oos.flush();
+//        oos.close();
+//        baos.close();
+//        byte[] bytes = baos.toByteArray();
+//        String encodeString = new BASE64Encoder().encode(bytes);
+//        System.out.println(encodeString);
+//        //-----------------------------------------------------
+//
+//        byte[] result2 = new BASE64Decoder().decodeBuffer(encodeString);
+//        ByteArrayInputStream bais = new ByteArrayInputStream(result2);
+//        ObjectInputStream ois = new ObjectInputStream(bais);
+//        Object object = ois.readObject();
+//        bais.close();
+//        ois.close();
+//        rr2 = (ResponseResult) object;
+//        System.out.println(rr2.toString());
+//        System.out.println(JSON.toJSONString(rr2));
+//
+//    }
 
     /**
      *

@@ -6,7 +6,7 @@ import org.dom4j.Element;
 import java.io.Serializable;
 
 /**
- * Created by lql on 2018/12/25 14:25
+ * Created by lql on 2018/12/25.
  * XML中<Actions></Actions>指令标签
  **/
 public class Action implements Serializable {

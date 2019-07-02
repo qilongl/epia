@@ -1,10 +1,7 @@
 package com.easipass.epia.controller;
 
 import com.easipass.epia.service.XmlBusiService;
-import com.easipass.epia.util.ObjectFormater;
-import com.easipass.epia.util.OutFormater;
-import com.easipass.epia.util.ResponseResult;
-import com.easipass.epia.util.StringHelper;
+import com.easipass.epia.util.*;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
@@ -42,7 +39,7 @@ public class ExtendController {
         /**
          * 构建参数,转换附件成字节流
          */
-        ResponseResult rr = new ResponseResult();
+        ApiResult apiResult = new ApiResult();
         Map<String, List<Map<String, byte[]>>> filesMap = new HashedMap();
         try {
             if (StringHelper.isNotNull(fileNames)) {
@@ -51,18 +48,19 @@ public class ExtendController {
                 change2FilesMap(keysJSONArray, filesMap, fileNameJSonArray, jarFiles);
             }
             // 调用服务、执行
-            rr = xmlBusiService.exec(jsonParams, filesMap);
+            apiResult = xmlBusiService.exec(jsonParams, filesMap);
         } catch (Exception ex) {
             ex.printStackTrace();
-            rr.setMsg(getClass().getName() + "服务执行异常!" + OutFormater.stackTraceToString(ex));
-            rr.setStatusCode(ResponseResult.RESULT_STATUS_CODE_ERROR);
+            apiResult.setFlag(Constants.FLAG_F);
+            apiResult.setErrorInfo(getClass().getName() + "服务执行异常!" + OutFormater.stackTraceToString(ex));
+            apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
         }
         /**
          * 响应
          */
         byte[] bytes = new byte[10];
         try {
-            bytes = ObjectFormater.toByteArray(rr);
+            bytes = ObjectFormater.toByteArray(apiResult);
         } catch (Exception e) {
             logger.error(getClass().getName(), e.getStackTrace());
         }
@@ -85,7 +83,7 @@ public class ExtendController {
         /**
          * 构建参数,转换附件成字节流
          */
-        ResponseResult rr = new ResponseResult();
+        ApiResult apiResult = new ApiResult();
         Map<String, List<Map<String, byte[]>>> filesMap = new HashedMap();
         try {
             //附件格式转换
@@ -98,15 +96,16 @@ public class ExtendController {
 //            rr = xmlBusiService.export(jsonParams, filesMap);
         } catch (Exception ex) {
             ex.printStackTrace();
-            rr.setMsg(getClass().getName() + "服务执行异常!" + OutFormater.stackTraceToString(ex));
-            rr.setStatusCode(ResponseResult.RESULT_STATUS_CODE_ERROR);
+            apiResult.setFlag(Constants.FLAG_F);
+            apiResult.setErrorInfo(getClass().getName() + "服务执行异常!" + OutFormater.stackTraceToString(ex));
+            apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
         }
         /**
          * 响应
          */
         byte[] bytes = new byte[10];
         try {
-            bytes = ObjectFormater.toByteArray(rr);
+            bytes = ObjectFormater.toByteArray(apiResult);
         } catch (Exception e) {
             logger.error(getClass().getName(), e.getStackTrace());
         }
@@ -122,22 +121,21 @@ public class ExtendController {
     @ResponseBody
     @RequestMapping(value = "/extendService/reloadFunction", method = RequestMethod.POST)
     public String reloadFunction(String key) {
-        ResponseResult rr = new ResponseResult();
+        ApiResult apiResult = new ApiResult();
         try {
             xmlBusiService.reloadFunction(key);
-            rr.setMsg(key + "重载成功");
-            rr.setStatusCode(ResponseResult.RESULT_STATUS_CODE_SUCCESS);
+            apiResult.setFlag(Constants.FLAG_T);
         } catch (Exception e) {
             logger.error(getClass().getName(), e.getStackTrace());
-            rr.setMsg(getClass().getName() + "业务文件" + key + "重载失败!" + OutFormater.stackTraceToString(e));
-            rr.setStatusCode(ResponseResult.RESULT_STATUS_CODE_ERROR);
+            apiResult.setErrorInfo(getClass().getName() + "业务文件" + key + "重载失败!" + OutFormater.stackTraceToString(e));
+            apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
         }
         /**
          * 响应
          */
         byte[] bytes = new byte[10];
         try {
-            bytes = ObjectFormater.toByteArray(rr);
+            bytes = ObjectFormater.toByteArray(apiResult);
         } catch (Exception e) {
             logger.error(getClass().getName(), e.getStackTrace());
         }

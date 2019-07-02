@@ -1,8 +1,8 @@
 package com.easipass.epia.service;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.easipass.epia.util.ResponseResult;
+import com.easipass.epia.util.ApiResult;
+import com.easipass.epia.util.Constants;
 import com.easipass.epia.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +34,8 @@ public class ComponentService {
     @Value("${tmp.dir:c:/tmp}")
     private String tmpDir;
 
-    public ResponseResult service(String jsonParams, MultiValueMap<String, MultipartFile> fileMap, String url) throws Exception {
-        ResponseResult rr = new ResponseResult();
+    public ApiResult service(String jsonParams, MultiValueMap<String, MultipartFile> fileMap, String url) throws Exception {
+        ApiResult apiResult = new ApiResult();
         /**
          * 上传文件过程中产生的临时文件集合
          */
@@ -64,9 +64,9 @@ public class ComponentService {
                     try {
                         fileSystemResource = changeMultiFileToFSR(file);
                     } catch (Exception e) {
-                        rr.setMsg("原始文件:" + file.getOriginalFilename() + ",上传错误:" + e.getMessage());
-                        rr.setStatusCode(ResponseResult.RESULT_STATUS_CODE_ERROR);
-                        return rr;
+                        apiResult.setErrorInfo("原始文件:" + file.getOriginalFilename() + ",上传错误:" + e.getMessage());
+                        apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
+                        return apiResult;
                     }
                     param.add("jarFiles", fileSystemResource);
                     keys.add(key);
@@ -83,16 +83,16 @@ public class ComponentService {
          */
         String rs = restTemplate.postForObject(url, param, String.class);
         if (!StringHelper.isNotNull(rs)) {
-            rr.setMsg("未收到组件服务(Component)响应信息,请联系管理员!");
-            rr.setStatusCode(ResponseResult.RESULT_STATUS_CODE_ERROR);
+            apiResult.setErrorInfo("未收到组件服务(Component)响应信息,请联系管理员!");
+            apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
         } else {
-            rr = StringHelper.getRRFromStream(rs);
+            apiResult = StringHelper.getRRFromStream(rs);
         }
         /**
          * 清理临时文件
          */
         removeTmpFiles(tmpFiles);
-        return rr;
+        return apiResult;
     }
 
     /**
@@ -103,8 +103,8 @@ public class ComponentService {
      * @return
      * @throws Exception
      */
-    public ResponseResult reloadFunction(String url, String key) throws Exception {
-        ResponseResult rr = new ResponseResult();
+    public ApiResult reloadFunction(String url, String key) throws Exception {
+        ApiResult apiResult = new ApiResult();
         MultiValueMap<String, Object> param = new LinkedMultiValueMap<>();
         param.add("key", key);
         /**
@@ -112,12 +112,12 @@ public class ComponentService {
          */
         String rs = restTemplate.postForObject(url, param, String.class);
         if (!StringHelper.isNotNull(rs)) {
-            rr.setMsg("未收到组件服务(Component)响应信息,请联系管理员!");
-            rr.setStatusCode(ResponseResult.RESULT_STATUS_CODE_ERROR);
+            apiResult.setErrorInfo("未收到组件服务(Component)响应信息,请联系管理员!");
+            apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
         } else {
-            rr = StringHelper.getRRFromStream(rs);
+            apiResult = StringHelper.getRRFromStream(rs);
         }
-        return rr;
+        return apiResult;
     }
 
     /**

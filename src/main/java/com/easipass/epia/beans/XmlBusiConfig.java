@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by lql on 2018/12/25 14:18
+ * Created by lql on 2018/12/25.
  * XML业务文件对应的实体对象
  **/
 public class XmlBusiConfig implements Serializable {
@@ -379,7 +379,7 @@ public class XmlBusiConfig implements Serializable {
                 }
             }
         } catch (Exception ex) {
-            throw new UserException("入参校验", ResponseResult.RESULT_STATUS_CODE_ERROR, "校验入参时异常!", ex);
+            throw new UserException("入参校验", Constants.RESULT_STATUS_CODE_ERROR, "校验入参时异常!", ex);
         }
         return inParameters;
     }
@@ -514,7 +514,7 @@ public class XmlBusiConfig implements Serializable {
     private JSONObject buildNullJsonObject(Parameters parameters, JSONObject inParams) {
         String name = parameters.getName();
         // 参数是列表
-        if (parameters.islist()) {
+        if (parameters.isIslist()) {
             JSONArray jsonArray = new JSONArray();
             inParams.put(name, jsonArray);
             return inParams;
@@ -554,7 +554,7 @@ public class XmlBusiConfig implements Serializable {
      */
     private void checkInParamsTooMuch(Parameters parameters, JSONObject inParameters) {
         String key = parameters.getName();
-        if (parameters.islist()) {
+        if (parameters.isIslist()) {
             net.sf.json.JSONArray jsonArray = inParameters.getJSONArray(key);
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -604,7 +604,7 @@ public class XmlBusiConfig implements Serializable {
             /**
              * 入参jsonArray
              */
-            if (parameters_Model.islist()) {// 遍历每一个入参对象
+            if (parameters_Model.isIslist()) {// 遍历每一个入参对象
                 net.sf.json.JSONArray jsonArray = inParameters.getJSONArray(key);
                 for (int i = 0; i < jsonArray.size(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -820,7 +820,7 @@ public class XmlBusiConfig implements Serializable {
         List<Map<String, Object>> list = null;
         if (getParametersMap().containsKey(paramName)) {
             Parameters parameters = getParametersMap().get(paramName);
-            if (parameters.islist()) {
+            if (parameters.isIslist()) {
                 net.sf.json.JSONArray inParamArray = inParams.getJSONArray(paramName);
                 list = (List<Map<String, Object>>) inParamArray;
             } else {
