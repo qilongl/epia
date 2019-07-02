@@ -4,26 +4,14 @@
         <test>
             <PAGENUM/>
             <PAGESIZE/>
-            <PROP default=""/>
-            <SORT default="D"/>
+            <PROP />
+            <SORT/>
         </test>
     </Parameters>
     <Actions>
         <select id="abc" isreturn="true" errorid="1" params="test" ispaging="true">
             <![CDATA[
             select * from sys_function
-            <if test="#{PROP}==''">
-                ORDER BY CRT_DT
-            </if>
-            <if test="#{PROP}=='OBJID'">
-                ORDER BY OBJID
-            </if>
-            <if test="#{SORT}=='D'">
-                DESC
-            </if>
-            <if test="#{SORT}=='A'">
-                ASC
-            </if>
             ]]>
         </select>
 

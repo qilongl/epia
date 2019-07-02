@@ -87,14 +87,8 @@ public class XmlBusiConfigContainer {
     private void XML2DB(List<File> allFiles, DBService dbService) throws Exception {
         int sucNum = 0;
         int uptNum = 0;
-        int num = 0;
         for (int i = 0; i < allFiles.size(); i++) {
             File file = allFiles.get(i);
-            //剔除表单引擎的form配置文件
-            if (file.getName().contains("_form") || file.getName().contains("_report")) {
-                num++;
-                continue;
-            }
             XmlBusiConfig config = new XmlBusiConfig(file);
             String id = config.getId();
             String moduleName = FileUtil.getNameKey(file.getParent() + File.separator + id, SysProperties.getSysbasedir(), SysProperties.getUserbasedir());
@@ -133,7 +127,7 @@ public class XmlBusiConfigContainer {
                 throw new UnsupportedOperationException("数据库中存在多个url为" + reqUrl + "的业务文件记录！");
             }
         }
-        logger.info("所有业务文件增量更新入库完成..共 " + (allFiles.size() - num) + " 个业务配置文件，增量" + sucNum + " 个,更新" + uptNum + "个\n");
+        logger.info("所有业务文件增量更新入库完成..共 " + allFiles.size() + " 个业务配置文件，增量" + sucNum + " 个,更新" + uptNum + "个\n");
     }
 
     /**
@@ -166,14 +160,8 @@ public class XmlBusiConfigContainer {
         }//开发环境
         else {
             logger.info("开发环境，从磁盘加载.....\n");
-            int num = 0;
             for (int i = 0; i < allFiles.size(); i++) {
                 File file = allFiles.get(i);
-                //剔除表单引擎的form配置文件
-                if (file.getName().contains("_form") || file.getName().contains("_report")) {
-                    num++;
-                    continue;
-                }
                 XmlBusiConfig config = new XmlBusiConfig(file);
                 String id = config.getId();
                 String moduleName = FileUtil.getNameKey(file.getParent() + File.separator + id, SysProperties.getSysbasedir(), SysProperties.getUserbasedir());
@@ -181,7 +169,7 @@ public class XmlBusiConfigContainer {
                 String reqUrl = moduleName + "-" + config.getId();
                 putInCache(reqUrl, config);
             }
-            logger.info("开发环境，加载完成,共" + (allFiles.size() - num) + "个");
+            logger.info("开发环境，加载完成,共" + allFiles.size() + "个");
         }
         logger.info("xml所占内存大小：" + RamUsageEstimator.sizeOf(configDic) + " Byte");
         logger.info("============业务文件加载到内存中，完成===============\n");

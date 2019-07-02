@@ -9,9 +9,7 @@
     <Actions>
         <select id="Retrieve22" isreturn="true" errorid="0" msg="啊呜,有问题哦">
             <![CDATA[
-            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time , rawtohex(sys_guid()) as UUID from  dual
-            UNION
-            SELECT to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time , rawtohex(sys_guid()) as UUID from  dual
+            SELECT #{test.test2} as param,to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') time  from  dual
             ]]>
         </select>
         <!--&lt;!&ndash;查询&ndash;&gt;-->

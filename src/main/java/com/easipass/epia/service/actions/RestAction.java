@@ -93,7 +93,7 @@ public class RestAction implements Serializable {
     public String getXmlBusiConfigKeyByRequetPath(String urlStr, MultiValueMap<String, Object> params) throws Exception {
         java.net.URL url = new URL(urlStr);
         String queryStr = url.getQuery();
-        String key = null;
+        String key = "";
         if (url.getPath().contains("/easyComponentService")) {
             String[] paramsArr = queryStr.split("&");
             key = paramsArr[0].split("=")[1];
