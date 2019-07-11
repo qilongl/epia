@@ -11,7 +11,12 @@
     <Actions>
         <select id="abc" isreturn="true" errorid="1" params="test" ispaging="true">
             <![CDATA[
-            select * from sys_function
+            select id,objid,fun_name,fun_url from sys_function
+            ]]>
+        </select>
+        <select id="def" isreturn="true" errorid="2" params="test" ispaging="true">
+            <![CDATA[
+            select * from sys_user
             ]]>
         </select>
 

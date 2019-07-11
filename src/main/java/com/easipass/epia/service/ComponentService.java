@@ -83,6 +83,7 @@ public class ComponentService {
          */
         String rs = restTemplate.postForObject(url, param, String.class);
         if (!StringHelper.isNotNull(rs)) {
+            apiResult.setFlag(Constants.FLAG_F);
             apiResult.setErrorInfo("未收到组件服务(Component)响应信息,请联系管理员!");
             apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
         } else {

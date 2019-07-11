@@ -128,7 +128,7 @@ public class SqlAction implements Serializable {
          */
         String outSql = refactorSqlByParams(executeSql, paramsList);
         logger.debug("参数列表:" + JSON.toJSONString(paramsList).toString());
-        logger.debug("还原后语句:" + outSql);
+        logger.debug("还原后语句:\n" + outSql);
 
         if (action.getCmdType().equalsIgnoreCase(Action.INSERT)) {
             num = xmlBusiConfig.getDBService().updateByType(executeSql, paramsList);
@@ -141,7 +141,7 @@ public class SqlAction implements Serializable {
         } else {
             throw new NoSuchMethodException("无法识别的命令:" + action.getCmdType());
         }
-        logger.debug(executeSql);
+        logger.debug("\n" + executeSql);
         logger.debug(num + "-" + result);
         if (null == result) {
             result = new ArrayList<>();
