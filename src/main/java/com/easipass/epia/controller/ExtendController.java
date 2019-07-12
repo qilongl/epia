@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * Created by lql on 2018/12/26 15:35
- * 废弃 2019/07/12 15:22
+ * 废弃 2019/07/12
  **/
 @RestController
 @Scope("prototype")//防止单例出现竞争访问
