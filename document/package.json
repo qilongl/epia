@@ -1,0 +1,33 @@
+{
+  "name": "xml-analysis-component",
+  "version": "1.0.0",
+  "description": "基于xml的接口解析组件",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs",
+    "precommit": "lint-staged",
+    "lint": "prettier --write 'docs/**/*.md'"
+  },
+  "lint-staged": {
+    "*.{js,json,css,md.vue}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "author": "lql",
+  "devDependencies": {
+    "prettier": "1.14.2",
+    "vuepress": "0.14.9",
+    "husky": "0.14.3",
+    "lint-staged": "7.2.2"
+  },
+  "dependencies": {
+    "axios": "0.18.0",
+    "webpack-dev-middleware": "^3.6.0"
+  }
+}

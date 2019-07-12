@@ -1,4 +1,6 @@
 /target/
+/document/node_modules/
+/document/docs/.vuepress/dist/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
