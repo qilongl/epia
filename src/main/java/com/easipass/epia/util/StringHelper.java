@@ -62,7 +62,7 @@ public class StringHelper {
     }
 
     /**
-     * 从响应的字符串中反序列化出ResponseResult对象
+     * 从响应的字符串中反序列化出ApiResult对象
      *
      * @param rs
      * @return

@@ -19,13 +19,25 @@ public class JsonUtil {
         return null;
     }
 
+    /**
+     * JsonValueFilter.changeNullToString() 空值过滤器     值 null --->""
+     *
+     * @param entity
+     * @param <T>
+     * @return
+     */
     public static <T> String beanToJson(T entity) {
         try {
-            String jsonString = JSON.toJSONString(entity, SerializerFeature.DisableCircularReferenceDetect , SerializerFeature.MapSortField, SerializerFeature.WriteDateUseDateFormat);
-            return jsonString.equals("null") ? null:jsonString;
+            String jsonString = JSON.toJSONString(entity, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.MapSortField, SerializerFeature.WriteDateUseDateFormat);
+            return jsonString.equals("null") ? null : jsonString;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
         return null;
     }
+
+    public static String changeNullToString(Object object) {
+        return JSON.toJSONString(object, JsonValueFilter.changeNullToString());
+    }
+
 }

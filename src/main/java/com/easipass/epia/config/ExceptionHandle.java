@@ -1,10 +1,7 @@
 package com.easipass.epia.config;
 
 import com.alibaba.fastjson.JSON;
-import com.easipass.epia.util.ApiResult;
-import com.easipass.epia.util.Constants;
-import com.easipass.epia.util.ExceptionUtil;
-import com.easipass.epia.util.JsonValueFilter;
+import com.easipass.epia.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,8 +16,8 @@ public class ExceptionHandle {
 
     @ExceptionHandler
     public String exceptionHandle(Exception e) {
-        logger.error(ExceptionUtil.getErrorInfoFromException(e));
+        logger.error("-------ExceptionHandler{}", ExceptionUtil.getErrorInfoFromException(e));
         ApiResult apiResult = new ApiResult(Constants.RESULT_STATUS_CODE_ERROR, ExceptionUtil.getErrorInfoFromException(e));
-        return JSON.toJSONString(apiResult, JsonValueFilter.changeNullToString());
+        return JsonUtil.beanToJson(apiResult);
     }
 }

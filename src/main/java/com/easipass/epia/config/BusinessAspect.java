@@ -1,8 +1,9 @@
 package com.easipass.epia.config;
 
+import com.alibaba.fastjson.JSON;
 import com.easipass.epia.util.JsonUtil;
+import com.easipass.epia.util.JsonValueFilter;
 import com.easipass.epia.util.RequestUtil;
-import org.aspectj.apache.bcel.generic.RET;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -43,16 +44,16 @@ public class BusinessAspect {
         Object[] objects = point.getArgs();
         requestPreHandle(objects);
         Object result = point.proceed(objects);
-        return result;
+        logger.info("--------request[{}]--result:{}", requestUri, JsonUtil.beanToJson(result));
+//        return result;
+        return JsonUtil.changeNullToString(result);
     }
 
-    @AfterReturning(returning = "result", pointcut = "componentController()")
-    public Object result(JoinPoint point, Object result) {
-        logger.info("--------result:{}", result);
-        logger.info("--------result:{}", JsonUtil.beanToJson(result));
-        return result;
-
-    }
+//    @AfterReturning(returning = "result", pointcut = "componentController()")
+//    public Object result(JoinPoint point, Object result) {
+//        logger.info("--------result:{}", JsonUtil.beanToJson(result));
+//        return result;
+//    }
 
     private void requestPreHandle(Object[] objects) {
         if ("1".equals(showRequestHeaderSwitch)) {

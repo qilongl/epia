@@ -35,7 +35,7 @@ public class XmlBusiService implements IXmlBusiService {
     private XmlBusiConfigContainer xmlBusiConfigContainer;
 
     @Override
-    public ApiResult exec(String jsonparam, Map<String, List<Map<String, byte[]>>> fileMap) {
+    public ApiResult exec(Map map, Map<String, List<Map<String, byte[]>>> fileMap) {
         /**
          * 返回对象
          */
@@ -48,7 +48,7 @@ public class XmlBusiService implements IXmlBusiService {
          * 执行业务操作
          */
         // 解析出functions
-        JSONObject paramsObject = JSONObject.fromObject(jsonparam);
+        JSONObject paramsObject = JSONObject.fromObject(map);
         JSONArray functionArray = paramsObject.getJSONArray("Functions");
         // 是否多数据源
 //        boolean ismutiDataSource = isMutiDataSource(functionArray);
@@ -130,7 +130,7 @@ public class XmlBusiService implements IXmlBusiService {
                  * 整个业务操作集合执行完毕,提交事务
                  */
                 if (dpService == null)
-                    throw new UnsupportedOperationException(jsonparam + "传参错误，导致无法获取数据操作类！");
+                    throw new UnsupportedOperationException(map + "传参错误，导致无法获取数据操作类！");
                 dpService.commit();
             } catch (UserException e) {
                 logger.error(moduleName + "-" + functionName + "的" + e.getId() + "业务执行异常，异常编码:" + e.getErrorId() + ",操作撤销！", e.getMessage());
@@ -161,18 +161,18 @@ public class XmlBusiService implements IXmlBusiService {
         /**
          * 释放缓存资源
          */
-        release(jsonparam, fileMap);
+        release(map, fileMap);
         return apiResult;
     }
 
     /**
      * 释放资源
      *
-     * @param jsonparams
+     * @param map
      * @param fileMap
      */
-    private void release(String jsonparams, Map<String, List<Map<String, byte[]>>> fileMap) {
-        jsonparams = null;
+    private void release(Map map, Map<String, List<Map<String, byte[]>>> fileMap) {
+        map = null;
         if (null != fileMap)
             fileMap.clear();
         fileMap = null;

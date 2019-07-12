@@ -9,5 +9,5 @@ import java.util.Map;
  * Created by lql on 2018/12/26 11:19
  **/
 public interface IXmlBusiService {
-    ApiResult exec(String jsonparam, Map<String, List<Map<String, byte[]>>> fileMap);
+    ApiResult exec(Map map, Map<String, List<Map<String, byte[]>>> fileMap);
 }
