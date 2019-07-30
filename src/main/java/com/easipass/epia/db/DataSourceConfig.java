@@ -17,23 +17,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
 import java.sql.SQLException;
 
 /**
  * Created by lql on 2018/12/25 10:44
  **/
 @Component
-@Service
 public class DataSourceConfig {
     private static Logger logger = LoggerFactory.getLogger(DataSourceConfig.class);
     public static final String DEFAULT_DATASOURCE = "dataSource";// 系统资源默认使用的数据源
-    public static String dbConfig = "db.properties";
+    public static final String dbConfig = "db.properties";
 
-    private static String dataSource_URL = "dataSource.url";
-    private static String dataSource_USERNAME = "dataSource.username";
-    private static String dataSource_PASSWORD = "dataSource.password";
-    private static String dataSource_DRIVER_CLASS_NAME = "dataSource.driver-class-name";
-    private static String dataSource_TEST_SQL = "dataSource.testsql";
+    private final String dataSource_URL = "dataSource.url";
+    private final String dataSource_USERNAME = "dataSource.username";
+    private final String dataSource_PASSWORD = "dataSource.password";
+    private final String dataSource_DRIVER_CLASS_NAME = "dataSource.driver-class-name";
+    private final String dataSource_TEST_SQL = "dataSource.testsql";
 
     /**
      * 注入数据源连接池
@@ -143,7 +143,7 @@ public class DataSourceConfig {
         //添加初始化参数：initParams
 
         //白名单 (没有配置或者为空，则允许所有访问)
-		servletRegistrationBean.addInitParameter("allow","192.168.12.150,127.0.0.1");
+        servletRegistrationBean.addInitParameter("allow", "192.168.12.150,127.0.0.1");
         //IP黑名单 (存在共同时，deny优先于allow) : 如果满足deny的话提示:Sorry, you are not permitted to view this page.
 //		servletRegistrationBean.addInitParameter("deny","192.168.12.150");
         //登录查看信息的账号密码.

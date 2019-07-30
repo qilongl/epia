@@ -10,6 +10,17 @@ import javax.sql.DataSource;
  **/
 public class DBFactory {
     /**
+     * 创建DBService,默认容器，默认的数据源
+     *
+     * @return
+     */
+    public static DBService createDBService() {
+        DataSource dataSource = (DataSource) EpiaApplication.ctx.getBean(DataSourceConfig.DEFAULT_DATASOURCE);
+        DBService DBService = new DBService(dataSource);
+        return DBService;
+    }
+
+    /**
      * 创建DBService,使用默认的数据源
      *
      * @return
@@ -32,7 +43,7 @@ public class DBFactory {
     }
 
     /**
-     * 使用指定的数据源
+     * 使用指定的容器，指定的数据源
      *
      * @param dataSourceName 数据源名称
      * @return

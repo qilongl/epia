@@ -20,8 +20,6 @@ public class JsonUtil {
     }
 
     /**
-     * JsonValueFilter.changeNullToString() 空值过滤器     值 null --->""
-     *
      * @param entity
      * @param <T>
      * @return
@@ -36,6 +34,12 @@ public class JsonUtil {
         return null;
     }
 
+    /**
+     * JsonValueFilter.changeNullToString() 空值过滤器     值 null --->""
+     *
+     * @param object
+     * @return
+     */
     public static String changeNullToString(Object object) {
         return JSON.toJSONString(object, JsonValueFilter.changeNullToString());
     }
