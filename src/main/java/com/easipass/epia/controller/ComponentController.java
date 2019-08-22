@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Created by lql on 2018/12/26 12:29
  **/
-@Api("组件服务")
+@Api(tags = "ComponentController", description = "组件服务")
 @RestController
 public class ComponentController {
 
@@ -31,7 +31,7 @@ public class ComponentController {
      * @param request
      * @param response
      */
-    @ApiOperation("组件解析")
+    @ApiOperation(value = "组件解析")
     @RequestMapping(value = "/componentAnalysis", method = {RequestMethod.GET, RequestMethod.POST})
     public Object componentAnalysis(@RequestBody Map map, HttpServletRequest request, HttpServletResponse response) {
         ApiResult apiResult = componentService.componentAnalysis(map, request, response);
@@ -41,7 +41,7 @@ public class ComponentController {
     /**
      * 重新加载业务配置文件
      */
-    @ApiOperation("重新加载业务配置文件")
+    @ApiOperation(value = "重新加载业务配置文件")
     @RequestMapping(value = "/reloadBusinessConfiguration", method = {RequestMethod.GET, RequestMethod.POST})
     public Object reloadBusinessConfiguration(@RequestBody Map map) {
         String key = StringHelper.toString(map.get("key"));

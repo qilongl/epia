@@ -310,7 +310,7 @@ public class XmlBusiService implements IXmlBusiService {
      * @throws Exception
      */
     private void reloadFromDb(String key, DBService dpService) throws Exception {
-        List<Map<String, Object>> list = xmlBusiConfigContainer.getFunctionByUrl(key, dpService);
+        List<Map<String, Object>> list = xmlBusiConfigContainer.getFunctionByUrl( key, dpService);
         if (list.size() == 1) {
             Map<String, Object> objectMap = list.get(0);
             byte[] buf = (byte[]) objectMap.get("SOURCE");

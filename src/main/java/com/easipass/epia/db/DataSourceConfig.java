@@ -80,8 +80,8 @@ public class DataSourceConfig {
         try {
             //开启Druid的监控统计功能，mergeStat代替stat表示sql合并,wall表示防御SQL注入攻击
 //            dataSource.setFilters("mergeStat,wall,log4j");
-//            dataSource.setFilters("mergeStat,log4j2");//SpringBoot2.x 版本
-            dataSource.setFilters("mergeStat,log4j");//SpringBoot1.x 版本
+            dataSource.setFilters("mergeStat,log4j2");//SpringBoot2.x 版本
+//            dataSource.setFilters("mergeStat,log4j");//SpringBoot1.x 版本
         } catch (SQLException e) {
             e.printStackTrace();
         }

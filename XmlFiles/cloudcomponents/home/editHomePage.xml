@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    编辑首页快捷入口
+    @version 1.0
+    @author qilongl
+    @date 2018/09/29
+-->
+<Function id="editHomePage" datasource="datasource">
+    <Parameters>
+        <addParams islist="true">
+            <FK_MENU_ID   required="true"/>
+        </addParams>
+        <info>
+            <userId/>
+            <userName/>
+        </info>
+    </Parameters>
+    <Actions>
+        <delete id="delete" isreturn="true" params="addParams">
+            <![CDATA[
+                delete from SYS_HOME_MENU_CONFIG
+            ]]>
+        </delete>
+        <insert id="insert" isreturn="true" params="addParams">
+            <![CDATA[
+                INSERT INTO SYS_HOME_MENU_CONFIG(
+                                 ID,
+                                 fk_menu_id,
+                                 crt_dt,
+                                 crt_psn,
+                                 upd_dt,
+                                 upd_psn,
+                                 is_delete
+                                    )VALUES (
+                                 sys_id.nextval,
+                                 #{FK_MENU_ID},
+                                 sysdate,
+                                 #{info.userId},
+                                 sysdate,
+                                 #{info.userId},
+                                 0
+                                 )
+            ]]>
+        </insert>
+
+    </Actions>
+</Function>

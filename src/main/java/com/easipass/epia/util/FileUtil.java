@@ -83,19 +83,31 @@ public class FileUtil {
      * @param userbase
      * @return
      */
-    public static String getNameKey(String absPath, String sysbase, String userbase) {
+//    public static String getNameKey(String absPath, String sysbase, String userbase) {
+//        String moduleUrl = "";
+//        absPath = absPath.replaceAll("/", File.separator);
+//        if (absPath.contains(sysbase)) {
+//            moduleUrl = absPath.substring(absPath.indexOf(sysbase), absPath.length());
+//            moduleUrl = moduleUrl.replace(File.separator, "-");
+//            moduleUrl = moduleUrl.substring(0, moduleUrl.lastIndexOf("-"));
+//        } else {
+//            moduleUrl = absPath.substring(absPath.indexOf(userbase), absPath.length());
+//            moduleUrl = moduleUrl.replace(File.separator, "-");
+//            moduleUrl = moduleUrl.substring(0, moduleUrl.lastIndexOf("-"));
+//        }
+//        return moduleUrl;
+//    }
+    public static String getNameKey(String absPath, String location, String appCode) {
         String moduleUrl = "";
         absPath = absPath.replaceAll("/", File.separator);
-        if (absPath.contains(sysbase)) {
-            moduleUrl = absPath.substring(absPath.indexOf(sysbase), absPath.length());
-            moduleUrl = moduleUrl.replace(File.separator, "-");
-            moduleUrl = moduleUrl.substring(0, moduleUrl.lastIndexOf("-"));
-        } else {
-            moduleUrl = absPath.substring(absPath.indexOf(userbase), absPath.length());
-            moduleUrl = moduleUrl.replace(File.separator, "-");
-            moduleUrl = moduleUrl.substring(0, moduleUrl.lastIndexOf("-"));
-        }
+        location = location.replaceAll("/", File.separator);
+        location = location.substring(location.lastIndexOf(File.separator) + 1, location.length());
+        moduleUrl = absPath.substring(absPath.indexOf(location), absPath.length());
+        moduleUrl = moduleUrl.replace(File.separator, "-");
+        moduleUrl = moduleUrl.substring(0, moduleUrl.lastIndexOf("-"));
+        moduleUrl = appCode.concat("-").concat(moduleUrl);
         return moduleUrl;
+
     }
 
     public static void mkdirs(String path) {

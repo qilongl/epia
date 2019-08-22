@@ -2,6 +2,7 @@ package com.easipass.epia.beans;
 
 import com.easipass.epia.util.FileUtil;
 import com.easipass.epia.util.PropertiesUtil;
+import com.easipass.epia.util.StringHelper;
 import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,17 +82,17 @@ public class SysProperties {
      */
     public static void init() throws Exception {
         Configuration configuration = PropertiesUtil.getDirConfig(configFile);
-        String sysbasedir = configuration.getString("sysbasedir");
-        String userbasedir = configuration.getString("userbasedir");
+        String sysbasedir = StringHelper.stringEncoding2UTF8(configuration.getString("sysbasedir"));
+        String userbasedir = StringHelper.stringEncoding2UTF8(configuration.getString("userbasedir"));
         /**new get properties end**/
         sysBaseDir = sysbasedir;
         userBaseDir = userbasedir;
-        attachmentPath = configuration.getString("attachmentPath");
-        FileUtil.mkdirs(attachmentPath);
-        isPrintErrorDetail = configuration.getString("isPrintErrorDetail");
-        isProduction = configuration.getString("isProduction");
+        attachmentPath = StringHelper.stringEncoding2UTF8(configuration.getString("attachmentPath"));
+        isPrintErrorDetail = StringHelper.stringEncoding2UTF8(configuration.getString("isPrintErrorDetail"));
+        isProduction = StringHelper.stringEncoding2UTF8(configuration.getString("isProduction"));
         SysProperties.sysbasedir = sysbasedir.substring(sysbasedir.lastIndexOf(File.separator) + 1, sysbasedir.length());
         SysProperties.userbasedir = userbasedir.substring(userbasedir.lastIndexOf(File.separator) + 1, userbasedir.length());
+        FileUtil.mkdirs(attachmentPath);
         Iterator it = configuration.getKeys();
         dic.clear();
         while (it.hasNext()) {
@@ -113,7 +114,12 @@ public class SysProperties {
         if (dic.containsKey(key))
             return dic.get(key);
         else
-            throw new UnsupportedOperationException("您尝试获取未定义的系统属性" + key);
+            return null;
+//            throw new UnsupportedOperationException("您尝试获取未定义的系统属性" + key);
+    }
+
+    public static void set(String key, String value) {
+        dic.put(key, value);
     }
 
 }

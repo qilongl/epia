@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Function id="destoryXmlFunction" name="注销xml应用系统配置" datasource="dataSource">
+    <Parameters>
+        <busiConfig>
+            <objId></objId>
+        </busiConfig>
+    </Parameters>
+    <Actions>
+        <select id="configInfo" isreturn="true" params="busiConfig" errorid="1" except="1">
+            select IS_VALID from  sys_xml_config where is_delete=0 and objid= #{objId}
+        </select>
+        <if test="#{configInfo.IS_VALID}=='1'">
+            <update id="changeXmlConfigStatue" isreturn="true" params="busiConfig" errorid="1">
+                update sys_xml_config set is_valid=0 where is_delete=0 and objid= #{objId}
+            </update>
+            <update id="changeAllFunctionsStatue" isreturn="true" params="busiConfig" errorid="2">
+                update sys_function set is_delete=1 where app_code = (select app_code  from sys_xml_config where is_delete=0 and objid = #{objId})
+            </update>
+        </if>
+        <if test="#{configInfo.IS_VALID}!='1'">
+            <update id="changeXmlConfigStatue" isreturn="true" params="busiConfig" errorid="1">
+                update sys_xml_config set is_valid=1 where is_delete=0 and objid= #{objId}
+            </update>
+            <update id="changeAllFunctionsStatue" isreturn="true" params="busiConfig" errorid="2">
+                update sys_function set is_delete=0 where app_code = (select app_code  from sys_xml_config where is_delete=0 and objid = #{objId})
+            </update>
+        </if>
+    </Actions>
+</Function>

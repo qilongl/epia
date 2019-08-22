@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Function id="destoryXmlFunction" name="注销接口" datasource="dataSource">
+    <Parameters>
+        <busiConfig islist="true">
+            <!--请求标识：cloudcomponents-home-findHomePage-->
+            <reqUrl/>
+        </busiConfig>
+    </Parameters>
+    <Actions>
+        <!--校验参数是否合法,保证库中存在同名的reqUrl-->
+        <update id="sourceObj" isreturn="true" params="busiConfig" expect="1" errorid="1">
+            update sys_function  s set s.is_delete =1 where s.Fun_Url=#{reqUrl} and s.is_delete !=1
+        </update>
+    </Actions>
+</Function>

@@ -48,25 +48,47 @@ public class XmlBusiConfigContainer {
      */
     public void init(ApplicationContext ctx) throws Exception {
         logger.debug("\t准备初始化所有业务配置文件");
+        String xmlListSql = "select * from sys_xml_config where is_valid =1 and is_delete!=1";
         this.ctx = ctx;
         DBService dbService = DBFactory.createDBService(ctx, DataSourceConfig.DEFAULT_DATASOURCE);
+        List<Map<String, Object>> xmlConfigList = dbService.select(xmlListSql);
         try {
             dbService.startTransaction();
             /**
              * 1.读取磁盘所有业务文件
              */
-            List<File> allFiles = new ArrayList<>();
-            FileUtil.getAllFile(new File(SysProperties.getSysBaseDir()), ".xml", allFiles);
-            FileUtil.getAllFile(new File(SysProperties.getUserBaseDir()), ".xml", allFiles);
+//            List<File> allFiles = new ArrayList<>();
+
+            List<Map> list = new ArrayList<>();
+            for (Map<String, Object> map : xmlConfigList) {
+                Map xmlAppMap = new HashMap();
+                List<File> allFiles = new ArrayList<>();
+                String location = StringHelper.toString(map.get("LOCATION"));
+                FileUtil.getAllFile(new File(location), ".xml", allFiles);
+                xmlAppMap.put("appName", map.get("APP_NAME"));
+                xmlAppMap.put("appCode", map.get("APP_CODE"));
+                xmlAppMap.put("allFiles", allFiles);
+                xmlAppMap.put("location", location);
+                list.add(xmlAppMap);
+                if (!StringHelper.isNotNull(SysProperties.get("appCode"))){
+                    SysProperties.set("appCode",StringHelper.toString(map.get("APP_CODE")));
+                }
+            }
+//            FileUtil.getAllFile(new File(SysProperties.getSysBaseDir()), ".xml", allFiles);
+//            FileUtil.getAllFile(new File(SysProperties.getUserBaseDir()), ".xml", allFiles);
             /**
              * 2.xml增量入库
              * (xml格式校验，基础属性校验)
              */
-            XML2DB(allFiles, dbService);
+            for (Map map : list) {
+                XML2DB(map, dbService);
+            }
             /**
              * 3.xml存放到内存中
              */
-            XML2Che(allFiles, dbService);
+            for (Map map : list) {
+                XML2Che(map, dbService);
+            }
 
             dbService.commit();
         } catch (Exception ex) {
@@ -84,14 +106,20 @@ public class XmlBusiConfigContainer {
      * @param dbService
      * @throws Exception
      */
-    private void XML2DB(List<File> allFiles, DBService dbService) throws Exception {
+//    private void XML2DB(List<File> allFiles, DBService dbService) throws Exception {
+    private void XML2DB(Map map, DBService dbService) throws Exception {
+        List<File> allFiles = (List<File>) map.get("allFiles");
+        String appName = StringHelper.toString(map.get("appName"));
+        String appCode = StringHelper.toString(map.get("appCode"));
+        String location = StringHelper.toString(map.get("location"));
         int sucNum = 0;
         int uptNum = 0;
         for (int i = 0; i < allFiles.size(); i++) {
             File file = allFiles.get(i);
             XmlBusiConfig config = new XmlBusiConfig(file);
             String id = config.getId();
-            String moduleName = FileUtil.getNameKey(file.getParent() + File.separator + id, SysProperties.getSysbasedir(), SysProperties.getUserbasedir());
+//            String moduleName = FileUtil.getNameKey(file.getParent() + File.separator + id, SysProperties.getSysbasedir(), SysProperties.getUserbasedir());
+            String moduleName = FileUtil.getNameKey(file.getParent() + File.separator + id, location,appCode);
             config.setModuleName(moduleName);
             String reqUrl = moduleName + "-" + config.getId();
             /**
@@ -99,13 +127,15 @@ public class XmlBusiConfigContainer {
              */
             List list = getFunctionByUrl(reqUrl, dbService);
             if (list.size() == 0) {
-                String insertSql = "insert into sys_function(ID,OBJID,Fun_Name,Fun_Url,Crt_Dt,Crt_Psn,Upd_Dt,Upd_Psn,Is_Delete,FUN_SOURCE,IS_CONTRL_FUN,SOURCE) values(sys_id.nextval,sys_guid(),?,?,sysdate,'system',sysdate,'system',0,'XML',0,?)";
+                String insertSql = "insert into sys_function(ID,OBJID,Fun_Name,Fun_Url,Crt_Dt,Crt_Psn,Upd_Dt,Upd_Psn,Is_Delete,FUN_SOURCE,IS_CONTRL_FUN,SOURCE,APP_NAME,APP_CODE) values(sys_id.nextval,sys_guid(),?,?,sysdate,'system',sysdate,'system',0,'XML',0,?,?,?)";
                 String name = config.getName();
                 FileInputStream fileInputStream = new FileInputStream(file);
                 List params = new ArrayList<>();
                 params.add(name);
                 params.add(reqUrl);
                 params.add(fileInputStream);
+                params.add(appName);
+                params.add(appCode);
                 dbService.updateByType(insertSql, params);
                 logger.info(config.getName() + "," + reqUrl + ",增量入库 yes !");
                 sucNum++;
@@ -114,10 +144,11 @@ public class XmlBusiConfigContainer {
                 if (uptList.size() == 0) {
                     logger.info(config.getName() + "," + reqUrl + ",增量入库 no !");
                 } else {
-                    String uptSql = "update sys_function set source=?,Upd_Dt=sysdate,Upd_Psn='system' where fun_url=?";
+                    String uptSql = "update sys_function set source=?,Upd_Dt=sysdate,Upd_Psn='system' where app_code=? and  fun_url=?";
                     FileInputStream fileInputStream = new FileInputStream(file);
                     List params = new ArrayList<>();
                     params.add(fileInputStream);
+                    params.add(appCode);
                     params.add(reqUrl);
                     dbService.updateByType(uptSql, params);
                     logger.info(config.getName() + "," + reqUrl + ",更新 yes !");
@@ -136,13 +167,20 @@ public class XmlBusiConfigContainer {
      * @param allFiles
      * @param dpService
      */
-    private void XML2Che(List<File> allFiles, DBService dpService) throws Exception {
+//    private void XML2Che(List<File> allFiles, DBService dpService) throws Exception {
+    private void XML2Che(Map map, DBService dpService) throws Exception {
+        List<File> allFiles = (List<File>) map.get("allFiles");
+        String appName = StringHelper.toString(map.get("appName"));
+        String appCode = StringHelper.toString(map.get("appCode"));
+        String location = StringHelper.toString(map.get("location"));
         logger.info("============开始业务文件加载到内存中===============\n");
         //生产环境
         if ("true".equalsIgnoreCase(SysProperties.getIsProduction())) {
             logger.info("生产环境，从库中加载.....\n");
-            String sql = "select * from sys_function f where f.is_delete<>1 and f.fun_source='XML' and f.source is not null";
-            List<Map<String, Object>> result = dpService.select(sql);
+            String sql = "select * from sys_function f where f.is_delete<>1 and f.fun_source='XML' and f.source is not null and app_code = ?";
+            List params = new ArrayList();
+            params.add(appCode);
+            List<Map<String, Object>> result = dpService.select(sql, params);
             for (int i = 0; i < result.size(); i++) {
                 Map<String, Object> objectMap = result.get(i);
                 byte[] buf = (byte[]) objectMap.get("SOURCE");
@@ -158,19 +196,20 @@ public class XmlBusiConfigContainer {
             }
             logger.info("生产环境，加载完成,共" + result.size() + "个");
         }//开发环境
-        else {
-            logger.info("开发环境，从磁盘加载.....\n");
-            for (int i = 0; i < allFiles.size(); i++) {
-                File file = allFiles.get(i);
-                XmlBusiConfig config = new XmlBusiConfig(file);
-                String id = config.getId();
-                String moduleName = FileUtil.getNameKey(file.getParent() + File.separator + id, SysProperties.getSysbasedir(), SysProperties.getUserbasedir());
-                config.setModuleName(moduleName);
-                String reqUrl = moduleName + "-" + config.getId();
-                putInCache(reqUrl, config);
-            }
-            logger.info("开发环境，加载完成,共" + allFiles.size() + "个");
-        }
+//        else {
+//            logger.info("开发环境，从磁盘加载.....\n");
+//            for (int i = 0; i < allFiles.size(); i++) {
+//                File file = allFiles.get(i);
+//                XmlBusiConfig config = new XmlBusiConfig(file);
+//                String id = config.getId();
+////                String moduleName = FileUtil.getNameKey(file.getParent() + File.separator + id, SysProperties.getSysbasedir(), SysProperties.getUserbasedir());
+//                String moduleName = FileUtil.getNameKey(file.getParent() + File.separator + id, location);
+//                config.setModuleName(moduleName);
+//                String reqUrl = moduleName + "-" + config.getId();
+//                putInCache(reqUrl, config);
+//            }
+//            logger.info("开发环境，加载完成,共" + allFiles.size() + "个");
+//        }
         logger.info("xml所占内存大小：" + RamUsageEstimator.sizeOf(configDic) + " Byte");
         logger.info("============业务文件加载到内存中，完成===============\n");
     }
@@ -246,11 +285,6 @@ public class XmlBusiConfigContainer {
         }
         logger.info("\t重新发布业务配置文件" + key + " 成功 ");
         return true;
-    }
-
-    public static void main(String[] args) {
-        String key = "test-test1-test";
-        System.out.println(key.substring(key.lastIndexOf("-") + 1, key.length()));
     }
 
     /**

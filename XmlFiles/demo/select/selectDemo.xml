@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Epia id=" ." datasource="dataSource" name="查询样例" desc="查询标签用法">
+<Epia id="selectDemo" datasource="dataSource" name="查询样例" desc="查询标签用法">
     <Parameters>
         <test>
             <test></test>
