@@ -9,7 +9,7 @@ http://localhost:8888/easyComponentService?FunctionName=cloudcomponents-home-cha
     <Parameters>
     </Parameters>
     <Actions>
-        <select id="queryUserInfo"  isreturn="true">
+        <select id="queryUserInfo" isreturn="true">
             select * from sys_user
         </select>
     </Actions>

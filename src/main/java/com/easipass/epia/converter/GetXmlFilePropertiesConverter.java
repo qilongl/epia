@@ -27,14 +27,19 @@ public class GetXmlFilePropertiesConverter implements IConverter {
 
     @Override
     public Object exec(Action cmd, JSONObject jsonObject, Map<String, List<Map<String, byte[]>>> fileMap, Object dataSet, DBService dpService) throws Exception {
+        String relativeSavePath = "";
         List<Map<String, Object>> list = TypeUtil.changeToListMap(dataSet);
         Map<String, Object> objMap = list.get(0);
         String url = StringHelper.toString(objMap.get(reqUrl));
         //xml文件存储的相对路径
 //        String relativeSavePath = url.substring(0, url.lastIndexOf("-")).replace("-", File.separator);
-        String relativeSavePath = url.substring(url.indexOf("-")+1, url.lastIndexOf("-")).replace("-", File.separator);
+        int startIndex = url.indexOf("-", url.indexOf("-") + 1);
+        int lastIndex = url.lastIndexOf("-");
+        if (startIndex != lastIndex) {
+            relativeSavePath = url.substring(startIndex + 1, lastIndex).replace("-", File.separator);
+        }
         //xml文件的名称
-        String xmlFileName = url.substring(url.lastIndexOf("-") + 1, url.length()) + postFix;
+        String xmlFileName = url.substring(lastIndex + 1, url.length()) + postFix;
         List result = new ArrayList<>();
         Map map = new HashMap<>();
         map.put(fileName, xmlFileName);

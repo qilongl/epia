@@ -12,20 +12,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by json on 2018/3/26.
- * 重新加载指定路径的业务文件到内存
- */
-public class ReloadXmlAction implements IConverter {
+ * Created by StrangeDragon on 2019/8/27 11:08
+ **/
+public class RemoveXmlFromCache implements IConverter {
 
     @Override
     public Object exec(Action cmd, JSONObject jsonObject, Map<String, List<Map<String, byte[]>>> fileMap, Object dataSet, DBService dpService) throws Exception {
         XmlBusiService busiService = (XmlBusiService) XmlBusiConfigContainer.ctx.getBean("xmlBusiService");
         List<Map> list = (List) dataSet;
-//        String reqUrl = StringHelper.toString(list.get(0).get("reqUrl"));
-        for (Map map : list) {
-            String reqUrl = StringHelper.toString(map.get("reqUrl"));
-            busiService.reloadBusiConfig(reqUrl, dpService);
-        }
+        busiService.removeXmlBusiConfigInCache(list, dpService);
         return null;
     }
 }

@@ -250,6 +250,17 @@ public class XmlBusiService implements IXmlBusiService {
     }
 
     /**
+     * 从内存中移除业务配置文件
+     */
+    public void removeXmlBusiConfigInCache(List<Map> list, DBService dpService) throws Exception {
+        for (Map map : list) {
+            String reqUrl = StringHelper.toString(map.get("reqUrl"));
+            XmlBusiConfigContainer.configDic.remove(reqUrl);
+        }
+    }
+
+
+    /**
      * 自身数据源加载业务文件
      *
      * @param key
@@ -310,7 +321,7 @@ public class XmlBusiService implements IXmlBusiService {
      * @throws Exception
      */
     private void reloadFromDb(String key, DBService dpService) throws Exception {
-        List<Map<String, Object>> list = xmlBusiConfigContainer.getFunctionByUrl( key, dpService);
+        List<Map<String, Object>> list = xmlBusiConfigContainer.getFunctionByUrl(key, dpService);
         if (list.size() == 1) {
             Map<String, Object> objectMap = list.get(0);
             byte[] buf = (byte[]) objectMap.get("SOURCE");

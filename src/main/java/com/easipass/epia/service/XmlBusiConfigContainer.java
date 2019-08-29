@@ -40,6 +40,14 @@ public class XmlBusiConfigContainer {
 
     private Lock lock = new ReentrantLock();
 
+
+    public void init(ApplicationContext ctx, boolean isNewAdd) throws Exception {
+        if (!isNewAdd) {
+            configDic.clear();
+        }
+        init(ctx);
+    }
+
     /**
      * 启动时加载所有配置文件
      *
@@ -70,8 +78,8 @@ public class XmlBusiConfigContainer {
                 xmlAppMap.put("allFiles", allFiles);
                 xmlAppMap.put("location", location);
                 list.add(xmlAppMap);
-                if (!StringHelper.isNotNull(SysProperties.get("appCode"))){
-                    SysProperties.set("appCode",StringHelper.toString(map.get("APP_CODE")));
+                if (!StringHelper.isNotNull(SysProperties.get("appCode"))) {
+                    SysProperties.set("appCode", StringHelper.toString(map.get("APP_CODE")));
                 }
             }
 //            FileUtil.getAllFile(new File(SysProperties.getSysBaseDir()), ".xml", allFiles);
@@ -102,7 +110,6 @@ public class XmlBusiConfigContainer {
     /**
      * 磁盘xml增量入库
      *
-     * @param allFiles
      * @param dbService
      * @throws Exception
      */
@@ -119,7 +126,7 @@ public class XmlBusiConfigContainer {
             XmlBusiConfig config = new XmlBusiConfig(file);
             String id = config.getId();
 //            String moduleName = FileUtil.getNameKey(file.getParent() + File.separator + id, SysProperties.getSysbasedir(), SysProperties.getUserbasedir());
-            String moduleName = FileUtil.getNameKey(file.getParent() + File.separator + id, location,appCode);
+            String moduleName = FileUtil.getNameKey(file.getParent() + File.separator + id, location, appCode);
             config.setModuleName(moduleName);
             String reqUrl = moduleName + "-" + config.getId();
             /**

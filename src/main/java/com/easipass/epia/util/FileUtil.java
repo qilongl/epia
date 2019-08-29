@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
 
+import javax.sql.rowset.BaseRowSet;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,9 @@ public class FileUtil {
     public static void getAllFile(File dir, String stuffix, List<File> allFiles) {
         File[] files = dir.listFiles();
         if (files == null) {
-            throw new UnsupportedOperationException(dir + "目录不存在!");
+            dir.mkdirs();
+            return;
+//            throw new UnsupportedOperationException(dir + "目录不存在!");
         }
         for (File a : files) {
             if (a.isFile() && a.getName().toLowerCase().endsWith(stuffix)) {

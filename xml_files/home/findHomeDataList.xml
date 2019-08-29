@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+http://localhost:8888/easyComponentService?FunctionName=cloudcomponents-home-findHomeDataList&info-userId=132&info-userName=lql&&gjzq_2017-11-16%2016:07:234_f7a92e88e8ae74c520427d73d5083fc3-->
+<Function id="findHomeDataList" datasource="dataSource" name="获取首页待办已办研报列表" desc="获取首页待办已办研报列表">
+<Parameters>
+    <info islist="false">
+        <userId/>
+        <userName/>
+    </info>
+</Parameters>
+<Actions>
+    <select id="queryUserInfo" isreturn="true">
+        select * from sys_user
+    </select>
+    <select id="offerFoodList" isreturn="true" returntype="code-tree">
+        <![CDATA[
+        SELECT FM.OBJID, FM.OBJNAME, FM.OBJCODE AS CODE, FM.PRICE, FM.STOCK, FM.IS_SALE
+                  FROM FOOD_MENU FM
+                 WHERE FM.IS_DELETE = 0
+                 ORDER BY TO_CHAR(FM.OBJCODE)
+        ]]>
+    </select>
+
+    <!--<select id="findPendingAndToReadList" params="info" isreturn="true" errorid="待审待办查询错误">-->
+        <!--<![CDATA[-->
+            <!--SELECT * FROM (   SELECT * FROM (-->
+           <!--SELECT-->
+           <!--'' AS DB_OBJID,-->
+           <!--SCI2.CST_DESC AS TYPE,-->
+       <!--SEM.OBJNAME AS NAME,-->
+       <!--'2018' AS STATUS,-->
+       <!--TO_CHAR(SEM.START_TIME, 'yyyy-MM-dd HH24:mi:ss') AS START_TIME,-->
+       <!--'' AS TASK_ID,-->
+       <!--'' AS TASK_USER_ID,-->
+			 <!--'' AS FK_NODE_ID,-->
+			 <!--TO_CHAR(SEM.CLASSIFY) AS  WORKFLOW_ID,-->
+ <!--SEM.OBJID,-->
+ <!--SEM.FK_MENU_ID,-->
+ <!--'' AS NODE_OBJ_NAME,-->
+ <!--SEM.DATA_ID,-->
+ <!--'' as  INSTANCE_ID-->
+  <!--FROM SYS_EVENT_MSG SEM-->
+  <!--LEFT JOIN SYS_DATA_BASE SDB-->
+    <!--ON SEM.OBJID = SDB.OBJID-->
+  <!--LEFT JOIN SYS_CST_INFO SCI2-->
+    <!--ON SEM.CLASSIFY = SCI2.CST_NUM-->
+   <!--AND SCI2.CST_TYPE = '1207'-->
+   <!--AND SCI2.IS_DELETE = 0-->
+ <!--WHERE SDB.IS_DELETE = 0-->
+   <!--AND SEM.STATUS = 10-->
+    <!--AND sem.objtype=10-->
+ <!--AND sem.fk_user_id =#{userId}-->
+<!--UNION ALL-->
+<!--SELECT-->
+<!--DB.OBJID AS DB_OBJID,-->
+ <!--CASE-->
+		 <!--WHEN INSTR(WI.WF_NAME,'_') > 0 THEN-->
+			<!--substr(WI.WF_NAME,0,INSTR(WI.WF_NAME,'_',1,1)-1)-->
+		 <!--ELSE WI.WF_NAME-->
+	 <!--END AS TYPE,-->
+ <!--RI.REQUEST_NAME AS NAME,-->
+ <!--TO_CHAR(DB.STATUS) AS STATUS,-->
+ <!--CASE-->
+   <!--WHEN RT.START_TIME IS NOT NULL THEN-->
+    <!--TO_CHAR(RT.START_TIME, 'yyyy-MM-dd HH24:mi:ss')-->
+   <!--ELSE-->
+    <!--''-->
+ <!--END AS START_TIME,-->
+ <!--RT.OBJ_ID AS TASK_ID,-->
+ <!--RT.USER_ID AS TASK_USER_ID,-->
+ <!--RS.FK_NODE_ID,-->
+ <!--WI.WORKFLOW_ID,-->
+ <!--DB.OBJID,-->
+ <!--ni.FORM_URL  AS FK_MENU_ID,-->
+ <!--ni.OBJ_NAME           AS NODE_OBJ_NAME,-->
+ <!--'' AS DATA_ID,-->
+ <!--ri.INSTANCE_ID-->
+  <!--FROM-->
+       <!--WF_REQUEST_TASK RT-->
+
+  <!--LEFT JOIN WF_REQUEST_STEP RS-->
+    <!--ON RT.FK_STEP_ID = RS.STEP_ID-->
+
+  <!--LEFT JOIN WF_REQUEST_INSTANCE RI-->
+    <!--ON RS.FK_INSTANCE_ID = RI.INSTANCE_ID-->
+
+  <!--LEFT JOIN WF_NODE_INFO NI-->
+    <!--ON RS.FK_NODE_ID = NI.NODE_ID-->
+
+  <!--LEFT JOIN WF_WORKFLOW_INFO WI-->
+    <!--ON RI.FK_WORKFLOW_ID = WI.WORKFLOW_ID-->
+
+  <!--LEFT JOIN WF_REMIND_MODEL RM-->
+    <!--ON (WI.EMAIL_REMIND = RM.MODEL_ID OR WI.NOTIFY_REMIND = RM.MODEL_ID OR-->
+       <!--WI.MSM_REMIND = RM.MODEL_ID)-->
+
+  <!--LEFT JOIN SYS_DATA_BASE DB-->
+    <!--ON RI.INSTANCE_ID = DB.FK_INSTANCE_ID-->
+  <!--LEFT JOIN UF_SCHE US-->
+    <!--ON DB.OBJID = US.OBJID-->
+ <!--WHERE RT.USER_ID = #{userId}-->
+   <!--AND RT.FINISH_TIME IS NULL-->
+   <!--AND RI.IS_FINISHED <> 1-->
+   <!--AND RI.IS_DELETE <> 1-->
+   <!--AND RT.APPROVAL_TYPE <> 1-->
+   <!--AND （NI.NODE_TYPE = 2-->
+    <!--OR DB.STATUS = -1) )-->
+    <!--ORDER BY  START_TIME   DESC )where  rownum<11-->
+            <!--]]>-->
+    <!--</select>-->
+    <!--<select id="findToReadList" params="info"  isreturn="true" errorid="待阅查询错误">-->
+        <!--<![CDATA[-->
+            <!--SELECT * FROM (  SELECT * FROM (-->
+          <!--SELECT SCI2.CST_DESC AS TYPE,-->
+       <!--SEM.OBJNAME AS NAME,-->
+       <!--'2020' AS STATUS,-->
+       <!--TO_CHAR(SEM.START_TIME, 'yyyy-MM-dd HH24:mi:ss') AS START_TIME,-->
+       <!--'' AS TASK_ID,-->
+       <!--'' AS TASK_USER_ID,-->
+       <!--'' AS FK_NODE_ID,-->
+       <!--TO_CHAR(SEM.CLASSIFY) AS  WORKFLOW_ID,-->
+ <!--SEM.OBJID,-->
+ <!--SEM.FK_MENU_ID,-->
+ <!--'' AS NODE_OBJ_NAME,-->
+ <!--SEM.DATA_ID,-->
+ <!--'' as  INSTANCE_ID-->
+  <!--FROM SYS_EVENT_MSG SEM-->
+  <!--LEFT JOIN SYS_DATA_BASE SDB-->
+    <!--ON SEM.OBJID = SDB.OBJID-->
+  <!--LEFT JOIN SYS_CST_INFO SCI2-->
+    <!--ON SEM.CLASSIFY = SCI2.CST_NUM-->
+   <!--AND SCI2.CST_TYPE = '1207'-->
+   <!--AND SCI2.IS_DELETE = 0-->
+ <!--WHERE SDB.IS_DELETE = 0-->
+   <!--AND SEM.STATUS = 12-->
+    <!--AND sem.objtype=11-->
+ <!--AND sem.fk_user_id =#{userId}-->
+<!--union ALL-->
+<!--SELECT-->
+
+ <!--CASE-->
+		 <!--WHEN INSTR(WI.WF_NAME,'_') > 0 THEN-->
+			<!--substr(WI.WF_NAME,0,INSTR(WI.WF_NAME,'_',1,1)-1)-->
+		 <!--ELSE WI.WF_NAME-->
+	 <!--END AS TYPE,-->
+ <!--RI.REQUEST_NAME AS NAME,-->
+ <!--TO_CHAR(DB.STATUS) AS STATUS,-->
+ <!--CASE-->
+   <!--WHEN RT.START_TIME IS NOT NULL THEN-->
+    <!--TO_CHAR(RT.START_TIME, 'yyyy-MM-dd HH24:mi:ss')-->
+   <!--ELSE-->
+    <!--''-->
+ <!--END AS START_TIME,-->
+ <!--RT.OBJ_ID AS TASK_ID,-->
+ <!--RT.USER_ID AS TASK_USER_ID,-->
+ <!--RS.FK_NODE_ID,-->
+ <!--WI.WORKFLOW_ID,-->
+ <!--DB.OBJID,-->
+ <!--ni.FORM_URL  AS FK_MENU_ID,-->
+  <!--ni.OBJ_NAME  AS NODE_OBJ_NAME,-->
+ <!--'' AS DATA_ID,-->
+ <!--ri.INSTANCE_ID-->
+  <!--FROM WF_REQUEST_TASK RT-->
+
+  <!--LEFT JOIN WF_REQUEST_STEP RS-->
+    <!--ON RT.FK_STEP_ID = RS.STEP_ID-->
+
+  <!--LEFT JOIN WF_REQUEST_INSTANCE RI-->
+    <!--ON RS.FK_INSTANCE_ID = RI.INSTANCE_ID-->
+
+  <!--LEFT JOIN WF_NODE_INFO NI-->
+    <!--ON RS.FK_NODE_ID = NI.NODE_ID-->
+
+  <!--LEFT JOIN WF_WORKFLOW_INFO WI-->
+    <!--ON RI.FK_WORKFLOW_ID = WI.WORKFLOW_ID-->
+
+  <!--LEFT JOIN WF_REMIND_MODEL RM-->
+    <!--ON (WI.EMAIL_REMIND = RM.MODEL_ID OR WI.NOTIFY_REMIND = RM.MODEL_ID OR-->
+       <!--WI.MSM_REMIND = RM.MODEL_ID)-->
+
+  <!--LEFT JOIN SYS_DATA_BASE DB-->
+    <!--ON RI.INSTANCE_ID = DB.FK_INSTANCE_ID-->
+  <!--LEFT JOIN UF_SCHE US-->
+    <!--ON DB.OBJID = US.OBJID-->
+ <!--WHERE-->
+      <!--rt.USER_ID= #{userId}-->
+   <!--AND RT.FINISH_TIME IS NULL-->
+   <!--AND RI.IS_DELETE = 0-->
+   <!--AND RT.APPROVAL_TYPE = 1)-->
+  <!--ORDER BY  START_TIME DESC ) where rownum<11-->
+            <!--]]>-->
+    <!--</select>-->
+    <!--<select id="findReport" params="info" isreturn="true">-->
+        <!--<![CDATA[-->
+            <!--SELECT * FROM (-->
+            <!--SELECT URB.OBJID,-->
+             <!--TO_CHAR(URB.RPT_DAT, 'yyyy-MM-dd')  AS RPT_DAT,-->
+            <!--URT.OBJNAME AS RPT_TYPE,-->
+            <!--URB.RPT_TIT,-->
+            <!--URB.RPT_AUTHORS,-->
+            <!--URB.STR_SECU,-->
+            <!--URB.STR_INDU,-->
+            	<!--CASE WHEN NVL2(TB_INDU.INDU_INVST_RSK,'1','0')=0 AND NVL2(TB_SECU.STK_INVST_RSK,'1','0')=1 THEN sci2.cst_desc &#45;&#45;行业无  股票有-->
+						   	<!--WHEN NVL2(TB_INDU.INDU_INVST_RSK,'1','0')=1 AND NVL2(TB_SECU.STK_INVST_RSK,'1','0')=1 THEN sci.cst_desc  &#45;&#45;行业有 股票有-->
+								<!--WHEN NVL2(TB_INDU.INDU_INVST_RSK,'1','0')=1 AND NVL2(TB_SECU.STK_INVST_RSK,'1','0')='0' THEN sci.cst_desc &#45;&#45;行业有 股票无-->
+								<!--WHEN NVL2(TB_SECU.STK_INVST_RSK,'1','0')=0  AND NVL2(TB_INDU.INDU_INVST_RSK,'1','0')=0 THEN  ''&#45;&#45;行业无  股票无-->
+									<!--ELSE '' END AS STR_RAT,-->
+             <!--DECODE(SDB.STATUS,'9','已外发','3','入库','') AS IS_SEND,-->
+             <!--to_char(SDB.WF_CRT_DT, 'yyyy-mm-dd hh24:mi') AS APPLYTIME,-->
+             <!--to_char(URB.FIN_TIME, 'yyyy-mm-dd hh24:mi') AS FIN_TIME,-->
+            <!--to_char(SDB.STATUS) AS STATUSCODE,-->
+            <!--SU.OBJNAME AS SUBMITPSN,-->
+            <!--SDB.FK_INSTANCE_ID AS INSTANCEID,-->
+            <!--(SELECT SCI.CST_DESC-->
+            <!--FROM SYS_CST_INFO SCI-->
+            <!--WHERE SDB.STATUS = SCI.CST_NUM-->
+            <!--AND SCI.CST_TYPE = '1503'-->
+            <!--AND SCI.IS_DELETE = '0'-->
+            <!--AND SCI.IS_VALID = '1') AS WFSTATUS,-->
+            <!--(SELECT SCI.CST_DESC-->
+            <!--FROM SYS_CST_INFO SCI-->
+            <!--WHERE URB.RPT_DEG = SCI.CST_NUM-->
+            <!--AND SCI.CST_TYPE = '1609'-->
+            <!--AND SCI.IS_DELETE = '0'-->
+            <!--AND SCI.IS_VALID = '1') AS RPT_DEGSTR-->
+            <!--FROM UF_RPT_BAS URB-->
+            <!--LEFT JOIN SYS_DATA_BASE SDB-->
+            <!--ON URB.OBJID = SDB.OBJID-->
+            <!--LEFT JOIN UF_RPT_TYPE URT-->
+            <!--ON URB.FK_RPT_TYPE = URT.OBJID-->
+            <!--LEFT JOIN SYS_USER SU-->
+            <!--ON SU.OBJID = SDB.CRT_PSN-->
+            <!--AND SU.IS_CLOSE = '0'-->
+            <!--AND SU.IS_DELETE = '0'-->
+            <!--LEFT JOIN (SELECT FK_RPT_ID,-->
+            <!--LISTAGG(FK_USER_ID, ',') WITHIN GROUP(ORDER BY FK_USER_ID) USERID-->
+            <!--FROM UF_RPT_AUTHOR-->
+            <!--GROUP BY FK_RPT_ID) TB_AUTHOR-->
+            <!--ON URB.OBJID = TB_AUTHOR.FK_RPT_ID-->
+              <!--LEFT JOIN (SELECT FK_RPT_ID,-->
+            <!--LISTAGG(FK_SECU_ID, ',') WITHIN GROUP(ORDER BY FK_SECU_ID) AS SECUID,-->
+						<!--max(STK_INVST_RSK)  AS STK_INVST_RSK-->
+            <!--FROM UF_RPT_SECU_RAT-->
+            <!--GROUP BY FK_RPT_ID) TB_SECU-->
+            <!--ON URB.OBJID = TB_SECU.FK_RPT_ID-->
+            <!--LEFT JOIN (SELECT FK_RPT_ID,-->
+            <!--LISTAGG(FK_INDU_ID, ',') WITHIN GROUP(ORDER BY FK_INDU_ID) AS INDUID,-->
+						<!--max(INDU_INVST_RSK) AS INDU_INVST_RSK-->
+            <!--FROM UF_RPT_INDU_RAT-->
+            <!--GROUP BY FK_RPT_ID) TB_INDU-->
+            <!--ON URB.OBJID = TB_INDU.FK_RPT_ID-->
+            	<!--LEFT JOIN sys_cst_info sci-->
+						<!--ON  TB_INDU.INDU_INVST_RSK=sci.cst_num-->
+						<!--AND sci.cst_type= 1607 AND sci.is_valid=1 AND sci.is_delete=0-->
+						<!--LEFT JOIN sys_cst_info sci2-->
+            <!--ON  TB_SECU.STK_INVST_RSK=sci2.cst_num-->
+            <!--AND sci2.cst_type= 1607-->
+            <!--AND sci2.is_valid=1-->
+            <!--AND sci2.is_delete=0-->
+            <!--WHERE SDB.IS_DELETE = '0'-->
+            <!--AND (URB.IS_SEND=1  AND URB.RPT_DEG!=11)-->
+            <!--AND SDB.STATUS IN(3,9)-->
+          <!--order by RPT_DAT DESC,SDB.CRT_DT DESC) WHERE rownum<11-->
+            <!--]]>-->
+    <!--</select>-->
+</Actions>
+</Function>

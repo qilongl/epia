@@ -2,6 +2,7 @@ package com.easipass.epia.service;
 
 import com.alibaba.fastjson.JSON;
 import com.easipass.epia.util.*;
+import lombok.Data;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
@@ -39,6 +40,9 @@ public class ComponentService {
 
     @Autowired
     XmlBusiService xmlBusiService;
+
+    @Autowired
+    XmlBusiConfigContainer xmlBusiConfigContainer;
 
     @Value("${tmp.dir:c:/tmp}")
     private String tmpDir;
@@ -83,6 +87,44 @@ public class ComponentService {
         } catch (Exception e) {
             logger.error(getClass().getName(), e.getStackTrace());
             apiResult.setErrorInfo(getClass().getName() + "业务文件" + key + "重载失败!" + OutFormater.stackTraceToString(e));
+            apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
+        }
+        return apiResult;
+    }
+
+    /**
+     * 加载新增的xml配置下的所有配置文件
+     *
+     * @return
+     */
+    public ApiResult loadNewXmlConfiguration() {
+        ApiResult apiResult = new ApiResult();
+        try {
+            xmlBusiConfigContainer.init(XmlBusiConfigContainer.ctx,true);
+            apiResult.setFlag(Constants.FLAG_T);
+            apiResult.setData( "xml配置重新加载成功！");
+        } catch (Exception e) {
+            logger.error(getClass().getName(), e.getStackTrace());
+            apiResult.setErrorInfo(getClass().getName() + "xml配置重新加载失败!" + OutFormater.stackTraceToString(e));
+            apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
+        }
+        return apiResult;
+    }
+
+    /**
+     * 重新加载xml配置下的所有配置文件
+     *
+     * @return
+     */
+    public ApiResult reloadXmlConfiguration() {
+        ApiResult apiResult = new ApiResult();
+        try {
+            xmlBusiConfigContainer.init(XmlBusiConfigContainer.ctx,false);
+            apiResult.setFlag(Constants.FLAG_T);
+            apiResult.setData( "xml配置重新加载成功！");
+        } catch (Exception e) {
+            logger.error(getClass().getName(), e.getStackTrace());
+            apiResult.setErrorInfo(getClass().getName() + "xml配置重新加载失败!" + OutFormater.stackTraceToString(e));
             apiResult.setErrorCode(Constants.RESULT_STATUS_CODE_ERROR);
         }
         return apiResult;

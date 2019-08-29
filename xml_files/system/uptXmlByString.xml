@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Function id="addXmlByString" name="新建一个xml业务功能（通过字符串功能描述）" datasource="dataSource">
+<Function id="uptXmlByString" name="更新xml业务功能（通过功能xml正文）" datasource="dataSource">
     <Parameters>
         <busiConfig islist="true">
             <!--请求标识：cloudcomponents-home-findHomePage-->
@@ -18,26 +18,22 @@
     </Parameters>
     <Actions>
         <!--校验参数是否合法,保证库中存在同名的reqUrl-->
-        <select id="selectXml" params="busiConfig" expect="0" errorid="1" isreturn="true">
-            select 1 from sys_function  s where s.Fun_Url=#{reqUrl} and s.is_delete !=1
+        <select id="selectXml" params="busiConfig" expect="1" errorid="1">
+            select 1,SUBSTR(#{reqUrl}, 0, INSTR(#{reqUrl}, '-') - 1) AS APP_CODE from sys_function s where s.Fun_Url=#{reqUrl} and s.is_delete !=1
         </select>
-        <!--获取应用代码-->
-        <select id="selectAppCode" params="busiConfig" expect="1"  isreturn="true">
-            select SUBSTR(#{reqUrl}, 0, INSTR(#{reqUrl}, '-') - 1) AS APP_CODE from dual
-        </select>
-        <!--属性匹配到Converter-->
+        <!--为了匹配Converter所需要的入参-->
         <var id="busiParams">
             <CONTENT value="#{busiConfig.content}"/>
         </var>
         <!--xml字符串转成字节流-->
         <convert id="changeStringToStream" classpath="com.easipass.epia.converter.StringToStreamConverter" params="busiParams" isreturn="true" errorid="2"/>
         <!--入库-->
-        <insert id="insert2sys_function" params="changeStringToStream" errorid="110">
-            insert into
-            sys_function(ID,OBJID,Fun_Name,Fun_Url,Crt_Dt,Crt_Psn,Upd_Dt,Upd_Psn,Is_Delete,FUN_SOURCE,IS_CONTRL_FUN,SOURCE，APP_CODE)
-            values
-            (sys_id.nextval,sys_guid(),#{busiConfig.funName},#{busiConfig.reqUrl},sysdate,#{busiConfig.userId},sysdate,#{busiConfig.userId},0,#{busiConfig.infType},#{busiConfig.isFun},#{SOURCE},#{selectAppCode.APP_CODE})
-        </insert>
+        <!--配置文件更新-->
+        <update id="update2sys_function" params="changeStringToStream" errorid="111">
+            update sys_function set
+            Fun_Name=#{busiConfig.funName},Upd_Dt=sysdate,Upd_Psn=#{busiConfig.userId},SOURCE=#{SOURCE},FUN_SOURCE=#{busiConfig.infType},IS_CONTRL_FUN=#{busiConfig.isFun}
+            where Fun_Url=#{busiConfig.reqUrl}
+        </update>
         <!--获取xml文件的属性信息-->
         <convert id="getXmlProperties" classpath="com.easipass.epia.converter.GetXmlFilePropertiesConverter" params="busiConfig"/>
         <!--xml文件存入磁盘所需的参数-->
@@ -45,18 +41,18 @@
             <!--<isProduction value="${isProduction}"/>-->
             <!--<baseDir value="${baseDir}"/>-->
         <!--</var>-->
-
-
         <!--获取应用代码-->
         <select id="selectAppXmlLocation" expect="1"  isreturn="true">
-            select LOCATION AS BASEDIR from sys_xml_config where app_code=#{selectAppCode.APP_CODE}
+            select LOCATION AS BASEDIR from sys_xml_config where app_code=#{selectXml.APP_CODE}
         </select>
         <!--写入磁盘-->
         <createfile id="writeXml" filename="#{getXmlProperties.fileName}" params="busiConfig" propertyname="content" basesavepath="#{selectAppXmlLocation.BASEDIR}" savepath="#{getXmlProperties.relativeSavePath}" errorid="111"/>
-        <!--更新缓存-->
+
         <var id="reqParams">
             <reqUrl value="#{busiConfig.reqUrl}"/>
         </var>
-        <convert id="reloadCheByReqUrl" classpath="com.easipass.epia.converter.ReloadXmlAction" params="reqParams" isreturn="true" errorid="112"/>
+        <!--更新缓存-->
+        <!--<convert id="reloadCheByReqUrl" classpath="com.easipass.epia.converter.ReloadXmlAction" params="reqParams" isreturn="true"/>-->
+        <convert id="reloadCheByReqUrl" classpath="com.easipass.epia.converter.ReloadXmlAction" params="busiConfig" isreturn="true"/>
     </Actions>
 </Function>
