@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Function id="lineChartData" datasource="dataSource" name="获取折线图的数据" desc="获取折线图的数据">
+    <Parameters>
+    </Parameters>
+    <Actions>
+        <select id="interfaces" isreturn="true" errorid="interfaces">
+            select '11,11,11,11,11,11,11' as "expectedData",
+       sum(mon) || ',' || sum(tues) || ',' || sum(wed) || ',' || sum(thurs) || ',' ||
+       sum(fri) || ',' || sum(sat) || ',' || sum(sun) as "actualData"
+  from (select decode(week, '星期一', total, 0) mon,
+               decode(week, '星期二', total, 0) tues,
+               decode(week, '星期三', total, 0) wed,
+               decode(week, '星期四', total, 0) thurs,
+               decode(week, '星期五', total, 0) fri,
+               decode(week, '星期六', total, 0) sat,
+               decode(week, '星期日', total, 0) sun
+          from (select count(sf.fun_url) total,
+                       to_char(sf.crt_dt, 'day') week
+                  from sys_function sf
+                 group by to_char(sf.crt_dt, 'day')))
+        </select>
+<select id="interfaceVisit" isreturn="true" errorid="interfaceVisit">
+select '11,11,11,11,11,11,11' as "expectedData",
+       sum(mon) || ',' || sum(tues) || ',' || sum(wed) || ',' || sum(thurs) || ',' ||
+       sum(fri) || ',' || sum(sat) || ',' || sum(sun) as "actualData"
+  from (select decode(week, '星期一', total, 0) mon,
+               decode(week, '星期二', total, 0) tues,
+               decode(week, '星期三', total, 0) wed,
+               decode(week, '星期四', total, 0) thurs,
+               decode(week, '星期五', total, 0) fri,
+               decode(week, '星期六', total, 0) sat,
+               decode(week, '星期日', total, 0) sun
+          from (select count(sf.fun_url) total,
+                       to_char(sf.crt_dt, 'day') week
+                  from sys_function_visit sf
+                 group by to_char(sf.crt_dt, 'day')))
+  </select>
+<select id="application" isreturn="true" errorid="interfaceVisit">
+select '11,11,11,11,11,11,11' as "expectedData",
+       sum(mon) || ',' || sum(tues) || ',' || sum(wed) || ',' || sum(thurs) || ',' ||
+       sum(fri) || ',' || sum(sat) || ',' || sum(sun) as "actualData"
+  from (select decode(week, '星期一', total, 0) mon,
+               decode(week, '星期二', total, 0) tues,
+               decode(week, '星期三', total, 0) wed,
+               decode(week, '星期四', total, 0) thurs,
+               decode(week, '星期五', total, 0) fri,
+               decode(week, '星期六', total, 0) sat,
+               decode(week, '星期日', total, 0) sun
+          from (select count(sf.app_code) total,
+                       to_char(sf.crt_dt, 'day') week
+                  from sys_xml_config sf
+                 group by to_char(sf.crt_dt, 'day')))
+</select>
+    </Actions>
+</Function>

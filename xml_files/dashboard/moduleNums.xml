@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Function id="moduleNums" datasource="dataSource" name="获取首页模板的总数" desc="获取首页模板的总数">
+    <Parameters>
+    </Parameters>
+    <Actions>
+        <convert id="getXmlListInCache" classpath="com.easipass.epia.converter.GetXmlListInCacheConverter" isreturn="true" errorid="cache001"/>
+        <select id="list" isreturn="true">
+           select (select count(sx.app_code)
+          from sys_xml_config sx
+         where sx.is_delete = 0
+           and sx.is_valid = 1) "systemNums",
+       (select count(sf.fun_url) from sys_function sf where sf.is_delete = 0) "funNums",
+       (select count(1) from sys_function_visit) "interfaceVisitNums",
+        #{getXmlListInCache.total} as "xmlInCacheNums"
+  from dual
+        
+        </select>
+    </Actions>
+</Function>

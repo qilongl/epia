@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Function id="uptXmlConfigList" name="编辑xml配置信息" datasource="dataSource">
+    <Parameters>
+        <addparams>
+            <OBJID/>
+            <LOCATION/>
+            <APP_NAME default=""/>
+            <APP_CODE/>
+            <IS_VALID default=""/>
+            <IS_DELETE default=""/>
+            <UPD_PSN default=""/>
+        </addparams>
+    </Parameters>
+    <Actions>
+        <update id="update" isreturn="true" params="addparams" errorid="1">
+            UPDATE sys_xml_config 
+			SET LOCATION =#{LOCATION},
+				APP_NAME =#{APP_NAME},
+				APP_CODE =#{APP_CODE},
+				IS_VALID =#{IS_VALID},
+				IS_DELETE =#{IS_DELETE},
+				UPD_DT =SYSDATE,
+				UPD_PSN =#{UPD_PSN}
+            WHERE OBJID=#{OBJID}
+        </update>
+    </Actions>
+</Function>

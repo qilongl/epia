@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Function id="getApplicationFunctions" datasource="dataSource" name="获取应用系统接口" desc="获取应用系统接口">
+    <Parameters>
+    </Parameters>
+    <Actions>
+  
+        <select id="applicationList" isreturn="true">
+select listagg('"'||app_code||'"',',') within group (order by app_code) as "appCode" from sys_xml_config where is_delete =0 and is_valid=1
+         
+        </select>
+       <select id="applicationFunctionList" isreturn="true">
+          select count(1) "value",app_code "name" from sys_function group by app_code
+        </select>
+    </Actions>
+</Function>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Function id="abc" datasource="dataSource" name="xml测试" desc="xml测试">
+    <Parameters>
+    </Parameters>
+    <Actions>
+        <select id="queryUserInfo" isreturn="true">
+            select id as "id",name as "name",address as "address",objname as "objName" from sys_user
+        </select>
+        <select id="allTables" isreturn="true">
+            select table_name as "tableName" from user_tables
+        </select>
+    </Actions>
+</Function>

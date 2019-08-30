@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Function id="addXmlConfigList" name="添加xml配置信息" datasource="dataSource">
+    <Parameters>
+        <addparams>
+            <LOCATION/>
+            <APP_NAME default=""/>
+            <APP_CODE/>
+            <CRT_PSN default=""/>
+            <UPD_PSN default=""/>
+            <IS_VALID default="1"/>
+        </addparams>
+    </Parameters>
+    <Actions>
+<select id="check" isreturn="true" params="addparams" expect="0" errorid="checkErr">
+           select 1 from sys_xml_config where trim(app_code)=trim(#{APP_CODE})
+        </select>
+        <insert id="insert" isreturn="true" params="addparams" errorid="1">
+            insert into sys_xml_config (id，objid,LOCATION,APP_NAME,APP_CODE,CRT_PSN,UPD_PSN,IS_VALID ) values (sys_id.nextval,sys_guid(),#{LOCATION},#{APP_NAME},#{APP_CODE},#{CRT_PSN},#{UPD_PSN},#{IS_VALID})
+        </insert>
+    </Actions>
+</Function>

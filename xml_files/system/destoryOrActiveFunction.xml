@@ -1,0 +1,28 @@
+<Function id="destoryOrActiveFunction" name="注销或者激活接口" datasource="dataSource">
+    <Parameters>
+        <busiConfig islist="true">
+            <!--请求标识：cloudcomponents-home-findHomePage-->
+            <reqUrl/>
+        </busiConfig>
+    </Parameters>
+    <Actions>
+	    <!--校验参数是否合法,保证库中存在同名的reqUrl-->
+		<select id="select" isreturn="true" params="busiConfig" expect="1" errorid="1">
+            select IS_DELETE from  sys_function s  where s.Fun_Url=#{reqUrl}
+        </select>
+		<!--注销接口-->
+		<if test="#{select.IS_DELETE}=='0'">
+			<update id="changeFunctionStatue" isreturn="true" params="busiConfig" expect="1" errorid="1">
+			             update sys_function  s set s.is_delete =1 where s.Fun_Url=#{reqUrl}
+		        </update>
+                        <convert id="changeFunctionStatueInCache" classpath="com.easipass.epia.converter.RemoveXmlFromCache" params="busiConfig"/>
+		</if>
+		<!--激活接口-->
+		<if test="#{select.IS_DELETE}=='1'">
+                         <update id="changeFunctionStatue" isreturn="true" params="busiConfig" expect="1" errorid="1">
+			             update sys_function  s set s.is_delete =0 where s.Fun_Url=#{reqUrl}
+		        </update>
+			<convert id="changeFunctionStatueInCache" classpath="com.easipass.epia.converter.ReloadXmlAction" params="busiConfig"/>
+		</if>
+    </Actions>
+</Function>

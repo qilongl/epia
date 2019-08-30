@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Function id="test" datasource="dataSource" name="测试接口" desc="测试接口">
+    <Parameters>
+    </Parameters>
+    <Actions>
+  
+        <select id="list" isreturn="true">
+          select to_char(sysdate,'day') week from dual
+        </select>
+    </Actions>
+</Function>
